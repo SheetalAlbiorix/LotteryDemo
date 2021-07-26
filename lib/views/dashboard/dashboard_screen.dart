@@ -7,6 +7,7 @@ import 'package:getx_flutter/base/base_controller.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
+import 'package:getx_flutter/models/listData.dart';
 import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
 import 'package:lottie/lottie.dart';
@@ -20,20 +21,21 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with TickerProviderStateMixin {
   final _ctrl = Get.put(DashBoardController());
-  List<String> arEntry = [
-    "99",
-    "03",
-    "36",
-    "16",
-    "17",
-    "88",
-    "16",
-    "22",
-    "05",
-    "41",
-    "98",
-    "12"
-  ];
+
+  List<ListData> _listData = [
+    ListData(title: "99", isSelected: true),
+    ListData(title: "03", isSelected: false),
+    ListData(title: "36", isSelected: false),
+    ListData(title: "16", isSelected: false),
+    ListData(title: "17", isSelected: false),
+    ListData(title: "88", isSelected: false),
+    ListData(title: "16", isSelected: true),
+    ListData(title: "22", isSelected: false),
+    ListData(title: "05", isSelected: false),
+    ListData(title: "41", isSelected: false),
+    ListData(title: "98", isSelected: false),
+    ListData(title: "12", isSelected: false)
+  ].obs;
 
   final leftRoller = new GlobalKey<RollerListState>();
   final rightRoller = new GlobalKey<RollerListState>();
@@ -290,29 +292,41 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget entryGridList(BuildContext context) {
-    return GridView.builder(
+    return Obx(() => GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: arEntry.length,
+      itemCount: _listData.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio:
-              2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
-          crossAxisCount: 3,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0),
-      itemBuilder: (BuildContext context, int index) {
+        childAspectRatio:
+            2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
+        crossAxisCount: 3,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+      ),
+      itemBuilder: (
+        BuildContext context,
+        int index,
+      ) {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
             border: Border.all(color: lightBorderColor, width: 3),
           ),
           child: Align(
-              alignment: Alignment.center,
-              child: TextView(arEntry[index],
-                  textColor: whiteColor, fontSize: 30)),
+            alignment: Alignment.center,
+            child: AnimatedDefaultTextStyle(
+              duration: Duration(milliseconds: _listData[index].isSelected! ? 400 : 0),
+              style: TextStyle(fontSize: 30),
+              child: TextView(
+                _listData[index].title!,
+                textColor: whiteColor,
+                fontSize: 30,
+              ),
+            )
+          ),
         );
       },
-    );
+    ));
   }
 
   Widget _crackerShow() {
