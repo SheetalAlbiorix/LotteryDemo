@@ -71,8 +71,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                 slotMachine(),
                 GestureDetector(
                     onTap: () {
-                      // _startRotating();
-                      _winDialog(context);
+                      _startRotating();
+                      //_winDialog(context);
                     },
                     child: TextView(
                       "click me",
@@ -429,10 +429,10 @@ class _DashboardScreenState extends State<DashboardScreen>
     final rightRotationTarget = _random.nextInt(3 * slots.length);
     leftRoller.currentState?.smoothScrollToIndex(leftRotationTarget,
         duration: _ROTATION_DURATION, curve: Curves.linear);
-    rightRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
+    /* rightRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
         duration: _ROTATION_DURATION, curve: Curves.linear);
     fourthRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
-        duration: _ROTATION_DURATION, curve: Curves.linear);
+        duration: _ROTATION_DURATION, curve: Curves.linear);*/
   }
 
   void _finishRotating() {
