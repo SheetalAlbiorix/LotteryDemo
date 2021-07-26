@@ -33,7 +33,7 @@ class DashboardScreen extends StatelessWidget {
             children: [
               _headerView(),
               _timerView(),
-              _crackerShow(),
+              //_crackerShow(),
               _entryView(),
               Container(
                 padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
