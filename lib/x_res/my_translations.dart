@@ -17,7 +17,7 @@ class MyTranslations extends Translations {
 
   static void init() {
     final box = GetStorage();
-    String locale = box.read(MyConfig.LANGUAGE);
+    String? locale = box.read(MyConfig.LANGUAGE);
     if(locale == null) {
       Get.updateLocale(Locale('id'));
       box.write(MyConfig.LANGUAGE, 'id');

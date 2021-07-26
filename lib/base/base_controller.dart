@@ -37,7 +37,7 @@ class BaseController extends GetxController
   final box = GetStorage();
   bool isLoadMore = false;
   bool withScrollController = false;
-  ScrollController scrollController;
+  late ScrollController scrollController;
 
   set setEnableScrollController(bool value) => withScrollController = value;
 
