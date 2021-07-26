@@ -23,13 +23,13 @@ class _DashboardScreenState extends State<DashboardScreen>
   final _ctrl = Get.put(DashBoardController());
 
   List<ListData> _listData = [
-    ListData(title: "99", isSelected: true),
+    ListData(title: "99", isSelected: false),
     ListData(title: "03", isSelected: false),
     ListData(title: "36", isSelected: false),
     ListData(title: "16", isSelected: false),
     ListData(title: "17", isSelected: false),
     ListData(title: "88", isSelected: false),
-    ListData(title: "16", isSelected: true),
+    ListData(title: "16", isSelected: false),
     ListData(title: "22", isSelected: false),
     ListData(title: "05", isSelected: false),
     ListData(title: "41", isSelected: false),
@@ -46,9 +46,23 @@ class _DashboardScreenState extends State<DashboardScreen>
   Random _random = new Random();
   int? first = 16, second = 22, third = 05;
 
+  late Animation<double> animation;
+  late AnimationController controller;
+  bool animated = false;
+
   @override
   Widget build(BuildContext context) {
     //_ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
+
+    controller =
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    animation = Tween<double>(begin: 30, end: 40).animate(controller)
+      ..addListener(() {
+        setState(() {
+          // The state that has changed here is the animation object’s value.
+        });
+      });
+    controller.forward();
 
     return Scaffold(
       body: SafeArea(
@@ -73,7 +87,12 @@ class _DashboardScreenState extends State<DashboardScreen>
                 slotMachine(),
                 GestureDetector(
                     onTap: () {
-                      _startRotating();
+                      //_startRotating();
+                      setState(() {
+                        _listData[0].isSelected = true;
+                        _ctrl.textSize.value = 60.0;
+                        animated = !animated;
+                      });
                       //_winDialog(context);
                     },
                     child: TextView(
@@ -293,40 +312,52 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget entryGridList(BuildContext context) {
     return Obx(() => GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: _listData.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio:
-            2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
-        crossAxisCount: 3,
-        crossAxisSpacing: 8.0,
-        mainAxisSpacing: 8.0,
-      ),
-      itemBuilder: (
-        BuildContext context,
-        int index,
-      ) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            border: Border.all(color: lightBorderColor, width: 3),
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: _listData.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio:
+                2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
+            crossAxisCount: 3,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
           ),
-          child: Align(
-            alignment: Alignment.center,
-            child: AnimatedDefaultTextStyle(
-              duration: Duration(milliseconds: _listData[index].isSelected! ? 400 : 0),
-              style: TextStyle(fontSize: 30),
-              child: TextView(
-                _listData[index].title!,
-                textColor: whiteColor,
-                fontSize: 30,
+          itemBuilder: (
+            BuildContext context,
+            int index,
+          ) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                border: Border.all(color: lightBorderColor, width: 3),
               ),
-            )
-          ),
-        );
-      },
-    ));
+              child: Align(
+                  alignment: Alignment.center,
+                  child: AnimatedDefaultTextStyle(
+                    child: Text(_listData[index].title!),
+                    style: _listData[index].isSelected!
+                        ? TextStyle(
+                            color: whiteColor,
+                            fontSize: _ctrl.textSize.value,
+                          )
+                        : TextStyle(
+                            color: whiteColor,
+                            fontSize: 30,
+                          ),
+                    duration: Duration(microseconds: 800),
+                    onEnd: () => {
+                      _ctrl.textSize.value = 30.0,
+                    },
+                  )
+                  /*child: TextView(
+                  _listData[index].title!,
+                  textColor: whiteColor,
+                  fontSize: animation.value,
+                ),*/
+                  ),
+            );
+          },
+        ));
   }
 
   Widget _crackerShow() {

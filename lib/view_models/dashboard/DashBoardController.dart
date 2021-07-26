@@ -10,6 +10,7 @@ class DashBoardController extends BaseController {
 
   Rx<bool> isHeaderVisible = true.obs;
 
+  Rx<double> textSize = 30.0.obs;
   Timer? _timer;
   @override
   void onInit() {
