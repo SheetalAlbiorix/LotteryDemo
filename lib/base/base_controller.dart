@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../repository/repositories.dart';
 import '../x_utils/utilities.dart';
 import 'base_common_widgets.dart';
 import 'widget_state.dart';
@@ -34,7 +33,7 @@ export '../x_res/my_res.dart';
 /// Please extends to your [Controller].
 /// read the [Example] above.
 class BaseController extends GetxController
-    with BaseCommonWidgets, Utilities, Repositories, WidgetState, ScreenState {
+    with BaseCommonWidgets, Utilities /*Repositories*/, WidgetState, ScreenState {
   final box = GetStorage();
   bool isLoadMore = false;
   bool withScrollController = false;

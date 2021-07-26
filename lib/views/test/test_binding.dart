@@ -44,22 +44,22 @@ class TestController extends BaseController {
 
   void onGetMember() async {
     showLoadingDialog();
-    var res = await getDataMember();
+    // var res = await getDataMember();
     hideDialog();
     String text = '';
 
-    if (res.isError) text = XR().string.error_message;
-
-    if (res.status == true) {
-      try{
-        var member = Member.fromMap(res.body['member']);
-        text = member.name;
-      } catch (e) {
-        text = XR().string.error_message;
-      }
-    } else {
-      text = res.text;
-    }
+    // if (res.isError) text = XR().string.error_message;
+    //
+    // if (res.status == true) {
+    //   try{
+    //     var member = Member.fromMap(res.body['member']);
+    //     text = member.name;
+    //   } catch (e) {
+    //     text = XR().string.error_message;
+    //   }
+    // } else {
+    //   text = res.text;
+    // }
     showSnackBar(title: "Response",  message: text);
   }
 
@@ -71,7 +71,7 @@ class TestController extends BaseController {
         confirmTextColor: Colors.white,
         textConfirm: "Okee",
         textCancel: "Batal",
-        // onWillPop: () {},
+        onWillPop: () {},
         onConfirm: (){
           hideDialog();
         },
