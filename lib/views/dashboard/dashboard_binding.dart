@@ -22,6 +22,7 @@ class DashBoardController extends BaseController {
   void onInit() {
     super.onInit();
     MyTranslations.init();
+    startTimer(DateTime.now().add(Duration(seconds: 3)));
   }
 
 
@@ -53,7 +54,7 @@ class DashBoardController extends BaseController {
           endTime = endTime.add(Duration(seconds: -1));
 
           if (timer.tick > timerMaxSeconds) {
-            //isHeaderVisible.value = false;
+            isHeaderVisible.value = false;
             timer.cancel();
           }
         },
