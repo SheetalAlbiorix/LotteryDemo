@@ -6,20 +6,20 @@ import '../currency_input_formater.dart';
 // ignore: must_be_immutable
 class MyTextFormField extends StatelessWidget {
 
-  ValueChanged<String> onChanged;
+  ValueChanged<String>? onChanged;
   String labelText;
   String initialText;
   String hint;
-  FocusNode focusNode;
-  FocusNode focusNodeNext;
+  FocusNode? focusNode;
+  FocusNode? focusNodeNext;
   bool obscureText;
   bool inputNumber;
   bool currencyMode;
   bool _withIconShowHideText = false;
   int maxLength;
   int maxLines;
-  TextEditingController controller;
-  FormFieldSetter<String> onSaved;
+  TextEditingController? controller;
+  FormFieldSetter<String>? onSaved;
 
   MyTextFormField(
       {this.onChanged,

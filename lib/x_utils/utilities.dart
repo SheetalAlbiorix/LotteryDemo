@@ -52,25 +52,25 @@ class Utilities {
     return value;
   }
 
-  String formattedDate({String format, String date}) {
+  String formattedDate({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('dd MMMM yyyy').format(dateTime);
     return formattedDate;
   }
 
-  String formattedDateGetDay({String format, String date}) {
+  String formattedDateGetDay({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('EEEE').format(dateTime);
     switch(formattedDate){
@@ -100,13 +100,13 @@ class Utilities {
     return formattedDate;
   }
 
-  String formattedDateGetMonth({String format, String date}) {
+  String formattedDateGetMonth({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('MMMM').format(dateTime);
     switch(formattedDate){
@@ -151,37 +151,37 @@ class Utilities {
     return formattedDate;
   }
 
-  String formattedSimpleDate({String format, String date}) {
+  String formattedSimpleDate({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
     return formattedDate;
   }
 
-  String formattedSuperSimpleDate({String format, String date}) {
+  String formattedSuperSimpleDate({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('dd MMM').format(dateTime);
     return formattedDate;
   }
 
-  String formattedDateTimeWithDay({String format, String date}) {
+  String formattedDateTimeWithDay({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String day = formattedDateGetDay(format: format, date: date);
 
@@ -189,37 +189,37 @@ class Utilities {
     return '${day}, ${formattedDate}';
   }
 
-  String formattedDateTime({String format, String date}) {
+  String formattedDateTime({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('dd MMMM yyyy HH:mm').format(dateTime);
     return formattedDate;
   }
 
-  String formattedTime({String format, String date}) {
+  String formattedTime({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('HH:mm').format(dateTime);
     return formattedDate;
   }
 
-  String formattedSimpleDateTime({String format, String date}) {
+  String formattedSimpleDateTime({String? format, String? date}) {
     if (date == 'null') {
       return "";
     }
 
     DateFormat dateFormat = DateFormat(format);
-    DateTime dateTime = dateFormat.parse(date);
+    DateTime dateTime = dateFormat.parse(date!);
 
     String formattedDate = DateFormat('dd MMM yyyy HH:mm').format(dateTime);
     return formattedDate;
@@ -230,21 +230,6 @@ class Utilities {
     // String parsedString = parse(document.body.text).documentElement.text;
     return htmlString;
   }
-
-  Future<String> getVersionApp() {
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      String appName = packageInfo.appName;
-      String packageName = packageInfo.packageName;
-      String version = packageInfo.version;
-      String buildNumber = packageInfo.buildNumber;
-      if(Platform.isAndroid) {
-        return "Version "+version;
-      } else {
-        return "Version "+version;
-      }
-    });
-  }
-
 
   String stringCardFormated({String value = "", int splitOn = 3, String modelSplit = " "}) {
     String newValue  = "Error Formating";
@@ -278,20 +263,6 @@ class Utilities {
       temp += "$modelSplit"+value.substring(startIndex, value.length);
       return temp;
     }
-  }
-
-  Color colorConvert(String color) {
-    color = color.replaceAll("#", "");
-    if (color.length == 6) {
-      return Color(int.parse("0xFF"+color));
-    } else if (color.length == 8) {
-      return Color(int.parse("0x"+color));
-    }
-  }
-
-  String stringSliptedConvertToSentence(String string, String splitter) {
-    string = string.replaceAll("$splitter", " ");
-    string = string.capitalizeFirstofEach;
   }
 
   void logWhenDebug(String tag,String message){

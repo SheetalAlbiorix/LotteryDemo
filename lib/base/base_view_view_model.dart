@@ -17,9 +17,9 @@ export 'base_controller.dart';
 /// Please extends to your [ViewModel] / [Widget] / [Child].
 /// read the [Example] above.
 abstract class BaseViewModel<T extends BaseController> extends StatelessWidget {
-  const BaseViewModel({Key key}) : super(key: key);
+  const BaseViewModel({Key? key}) : super(key: key);
 
-  final String tag = null;
+  final String? tag = null;
 
   T get controller => GetInstance().find<T>(tag: tag);
 
@@ -56,9 +56,9 @@ abstract class BaseViewModel<T extends BaseController> extends StatelessWidget {
 /// read the [Example] above.
 abstract class BaseView<T extends BaseController> extends StatelessWidget {
 
-  const BaseView({Key key}) : super(key: key);
+  const BaseView({Key? key}) : super(key: key);
 
-  final String tag = null;
+  final String? tag = null;
   T get controller => GetInstance().find<T>(tag: tag);
 
   @override

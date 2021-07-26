@@ -16,12 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: AppThemes.theme(),
-      darkTheme: AppThemes.darktheme(),
+      darkTheme: AppThemes.theme(),
       themeMode: AppThemes().init(),
       locale: MyTranslations.locale,
       fallbackLocale: MyTranslations.fallbackLocale,
       translations: MyTranslations(),
-      initialRoute: RouterName.test,
+      initialRoute: RouterName.dashboard,
       debugShowCheckedModeBanner: false,
       getPages: Pages.pages(),
     );

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:getx_flutter/views/dashboard/dashboard_binding.dart';
+import 'package:getx_flutter/views/dashboard/dashboard_screen.dart';
 import 'package:getx_flutter/views/home/home_binding.dart';
 import 'package:getx_flutter/views/test/test_binding.dart';
 
@@ -18,6 +20,11 @@ class Pages {
         name: RouterName.test,
         page: () => TestScreen(),
         binding: TestBinding()
+      ),
+      GetPage(
+          name: RouterName.dashboard,
+          page: () => DashboardScreen(),
+          binding: DashboardBinding()
       ),
     ];
   }

@@ -77,7 +77,7 @@ class BaseCommonWidgets implements _CommonWidgetsInterface {
 
   @override
   void hideDialog() {
-    if (Get.isDialogOpen) Get.back();
+    if (Get.isDialogOpen!) Get.back();
   }
 
   @override
@@ -103,27 +103,27 @@ class BaseCommonWidgets implements _CommonWidgetsInterface {
   @override
   void showAlert({
     String title = "Alert",
-    TextStyle titleStyle,
-    Widget content,
-    VoidCallback onConfirm,
-    VoidCallback onCancel,
-    VoidCallback onCustom,
-    Color cancelTextColor,
-    Color confirmTextColor,
-    String textConfirm,
-    String textCancel,
-    String textCustom,
-    Widget confirm,
-    Widget cancel,
-    Widget custom,
-    Color backgroundColor,
+    TextStyle? titleStyle,
+    Widget? content,
+    VoidCallback? onConfirm,
+    VoidCallback? onCancel,
+    VoidCallback? onCustom,
+    Color? cancelTextColor,
+    Color? confirmTextColor,
+    String? textConfirm,
+    String? textCancel,
+    String? textCustom,
+    Widget? confirm,
+    Widget? cancel,
+    Widget? custom,
+    Color? backgroundColor,
     bool barrierDismissible = true,
-    Color buttonColor,
+    Color? buttonColor,
     String middleText = "Dialog made in 3 lines of code",
-    TextStyle middleTextStyle,
+    TextStyle? middleTextStyle,
     double radius = 20.0,
-    List<Widget> actions,
-    WillPopCallback onWillPop
+    List<Widget>? actions,
+    WillPopCallback? onWillPop
   }) {
     Get.defaultDialog(
         title : title,
@@ -172,30 +172,30 @@ abstract class _CommonWidgetsInterface {
 
   void showAlert({
     String title = "Alert",
-    TextStyle titleStyle,
-    Widget content,
-    VoidCallback onConfirm,
-    VoidCallback onCancel,
-    VoidCallback onCustom,
-    Color cancelTextColor,
-    Color confirmTextColor,
-    String textConfirm,
-    String textCancel,
-    String textCustom,
-    Widget confirm,
-    Widget cancel,
-    Widget custom,
-    Color backgroundColor,
+    TextStyle? titleStyle,
+    Widget? content,
+    VoidCallback? onConfirm,
+    VoidCallback? onCancel,
+    VoidCallback? onCustom,
+    Color? cancelTextColor,
+    Color? confirmTextColor,
+    String? textConfirm,
+    String? textCancel,
+    String? textCustom,
+    Widget? confirm,
+    Widget? cancel,
+    Widget? custom,
+    Color? backgroundColor,
     bool barrierDismissible = true,
-    Color buttonColor,
+    Color? buttonColor,
     String middleText = "Dialog made in 3 lines of code",
-    TextStyle middleTextStyle,
+    TextStyle? middleTextStyle,
     double radius = 20.0,
     //   ThemeData themeData,
-    List<Widget> actions,
+    List<Widget>? actions,
 
     // onWillPop Scope
-    WillPopCallback onWillPop
+    WillPopCallback? onWillPop
   });
 
   void hideDialog();

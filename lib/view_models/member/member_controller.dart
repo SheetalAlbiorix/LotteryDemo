@@ -36,7 +36,7 @@ class MemberController extends BaseController {
 
 
   void changeLanguage() {
-    String lang = box.read(MyConfig.LANGUAGE);
+    String? lang = box.read(MyConfig.LANGUAGE);
     if(lang == 'id') {
       MyTranslations.updateLocale(langCode: 'en');
     } else {

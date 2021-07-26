@@ -124,7 +124,7 @@ class AppThemes {
   /// This [Function] works to initialize what theme is used.
   ThemeMode init() {
     final box = GetStorage();
-    String tm = box.read(_sThemeModeKey);
+    String? tm = box.read(_sThemeModeKey);
     if (tm == null) {
       box.write(_sThemeModeKey, _sThemeModeLight);
       return ThemeMode.light;
@@ -161,7 +161,7 @@ class AppThemes {
   /// has several derivative functions.
   ThemeData general() {
     final box = GetStorage();
-    String tm = box.read(_sThemeModeKey);
+    String? tm = box.read(_sThemeModeKey);
     if (tm == _sThemeModeLight) {
       return _lightTheme;
     }
