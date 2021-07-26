@@ -252,9 +252,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _crackerShow() {
+  /*Widget _crackerShow() {
     return Lottie.asset('assets/json/success.json');
-  }
+  }*/
 
   Widget slotMachine() {
     return Row(
