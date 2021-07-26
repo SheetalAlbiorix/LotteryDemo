@@ -42,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   var _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
-  int? first = 0, second = 0, third = 0;
+  int? first = 16, second = 22, third = 05;
 
   @override
   Widget build(BuildContext context) {
@@ -327,80 +327,93 @@ class _DashboardScreenState extends State<DashboardScreen>
         duration: Duration(seconds: 1),
         child: Visibility(
           visible: !_ctrl.isHeaderVisible.value,
-          child: Container(
-            width: double.infinity,
-            //height: _ctrl.isHeaderVisible.value ? 0 : 40,
-            height: 40,
-            color: Colors.white,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: RollerList(
-                    items: slots,
-                    enabled: false,
-                    key: leftRoller,
-                    onSelectedIndexChanged: (value) {
-                      /*setState(() {
-                  first = value - 1;
-                });*/
-                    },
-                  ),
+          child: Column(
+            children: [
+              TextView(
+                thisWeekWinningNumberText,
+                textColor: Colors.white,
+                fontSize: 20,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: double.infinity,
+                //height: _ctrl.isHeaderVisible.value ? 0 : 40,
+                height: 40,
+                color: Colors.transparent,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: RollerList(
+                        items: slots,
+                        enabled: false,
+                        key: leftRoller,
+                        onSelectedIndexChanged: (value) {
+                          setState(() {
+                            first = 16;
+                          });
+                        },
+                      ),
+                    ),
+                    /* VerticalDivider(
+                      width: 2,
+                      color: Colors.black,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: RollerList(
+                        items: slots,
+                        scrollType: ScrollType.goesOnlyBottom,
+                        onSelectedIndexChanged: (value) {
+                          setState(() {
+                            second = 22;
+                          });
+                          _finishRotating();
+                        },
+                        onScrollStarted: _startRotating,
+                      ),
+                    ),*/
+                    VerticalDivider(
+                      width: 2,
+                      color: Colors.black,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: RollerList(
+                        enabled: false,
+                        items: slots,
+                        key: rightRoller,
+                        onSelectedIndexChanged: (value) {
+                          setState(() {
+                            third = 05;
+                          });
+                        },
+                      ),
+                    ),
+                    VerticalDivider(
+                      width: 2,
+                      color: Colors.black,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: RollerList(
+                        enabled: false,
+                        items: slots,
+                        key: fourthRoller,
+                        onSelectedIndexChanged: (value) {
+                          /*setState(() {
+                      fourth = value - 1;
+                    });*/
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                VerticalDivider(
-                  width: 2,
-                  color: Colors.black,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: RollerList(
-                    items: slots,
-                    scrollType: ScrollType.goesOnlyBottom,
-                    onSelectedIndexChanged: (value) {
-                      /*setState(() {
-                  second = value - 1;
-                });*/
-                      _finishRotating();
-                    },
-                    onScrollStarted: _startRotating,
-                  ),
-                ),
-                VerticalDivider(
-                  width: 2,
-                  color: Colors.black,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: RollerList(
-                    enabled: false,
-                    items: slots,
-                    key: rightRoller,
-                    onSelectedIndexChanged: (value) {
-                      /* setState(() {
-                  third = value - 1;
-                });*/
-                    },
-                  ),
-                ),
-                VerticalDivider(
-                  width: 2,
-                  color: Colors.black,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: RollerList(
-                    enabled: false,
-                    items: slots,
-                    key: fourthRoller,
-                    onSelectedIndexChanged: (value) {
-                      /*setState(() {
-                  fourth = value - 1;
-                });*/
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -429,13 +442,25 @@ class _DashboardScreenState extends State<DashboardScreen>
   static List<Widget> _getSlots() {
     List<Widget> result = [];
     for (int i = 0; i <= 9; i++) {
-      result.add(Container(
+      result.add(
+          /*Container(
         padding: EdgeInsets.all(15.0),
         color: Colors.white,
+
         child: TextView(
           i.toString(),
           fontSize: 10,
         ),
+      ));*/
+          Container(
+        decoration: BoxDecoration(
+          color: darkPurpleColor,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          border: Border.all(color: lightBorderColor, width: 3),
+        ),
+        child: Align(
+            alignment: Alignment.center,
+            child: TextView(i.toString(), textColor: whiteColor, fontSize: 30)),
       ));
     }
     return result;

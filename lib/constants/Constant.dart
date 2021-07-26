@@ -17,14 +17,15 @@ const Color lightBorderColor = Color(0xFF592750);
 const Color lightBorderColor1 = Color(0xFF190926);
 const Color lightPurpleColor1 = Color(0xFF370243);
 
-
-const weeklyLotteryText="Weekly Lottery";
-const playNowChanceText="Play now for your chance to win big every week! Submit entries before time expires";
-const jackpotText="JACKPOT";
-const remainingText="Remaining";
-const myEntriesText="MY ENTRIES";
-const submitEntryText="Submit entry";
-const thisWeekWinningNumberText="THIS WEEK'S WINNING NUMBERS";
-const youWonText="YOU WON!";
-const whatsNextText="What's next!";
-const yourEmployerText="Your Employer has been notified of your win and will be delivering your prize soon. If you have any questions please contact your supervisions. Thanks for playing!";
+const weeklyLotteryText = "Weekly Lottery";
+const playNowChanceText =
+    "Play now for your chance to win big every week! Submit entries before time expires";
+const jackpotText = "JACKPOT";
+const remainingText = "Remaining";
+const myEntriesText = "MY ENTRIES";
+const submitEntryText = "Submit entry";
+const thisWeekWinningNumberText = "THIS WEEK'S \n WINNING NUMBERS";
+const youWonText = "YOU WON!";
+const whatsNextText = "What's next!";
+const yourEmployerText =
+    "Your Employer has been notified of your win and will be delivering your prize soon. If you have any questions please contact your supervisions. Thanks for playing!";
