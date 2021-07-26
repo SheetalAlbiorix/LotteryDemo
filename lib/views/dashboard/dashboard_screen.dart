@@ -42,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   var _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
-  int? first = 16, second = 22, third = 05;
+  int? first = 0, second = 0, third = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +71,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                 slotMachine(),
                 GestureDetector(
                     onTap: () {
-                      _startRotating();
-                      //_winDialog(context);
+                      // _startRotating();
+                      _winDialog(context);
                     },
                     child: TextView(
                       "click me",
