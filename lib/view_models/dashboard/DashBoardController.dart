@@ -14,7 +14,6 @@ class DashBoardController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    MyTranslations.init();
     startTimer(DateTime.now().add(Duration(seconds: 3)));
   }
 
