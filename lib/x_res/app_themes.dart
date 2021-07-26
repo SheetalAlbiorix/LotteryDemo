@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:getx_flutter/constants/Constant.dart';
 
 import 'my_res.dart';
 
@@ -57,7 +58,7 @@ class AppThemes {
     ),
     appBarTheme: AppBarTheme(
       brightness: Brightness.dark,
-      color: MyColor.PRIMARY_COLOR,
+      color: lightPurpleColor,
       iconTheme: IconThemeData(color: MyColor.ICON_COLOR),
     ),
     colorScheme: ColorScheme.light(
