@@ -212,9 +212,9 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _crackerShow() {
+  /*Widget _crackerShow() {
     return Lottie.asset('assets/json/success.json');
-  }
+  }*/
 
   /*_winDialog(){
     Get.defaultDialog(
