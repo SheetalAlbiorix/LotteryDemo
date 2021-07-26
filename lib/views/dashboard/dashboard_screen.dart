@@ -6,6 +6,7 @@ import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
 import 'package:getx_flutter/views/dashboard/dashboard_binding.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
+import 'package:lottie/lottie.dart';
 
 class DashboardScreen extends StatelessWidget {
   final _ctrl = Get.put(DashBoardController());
@@ -32,6 +33,7 @@ class DashboardScreen extends StatelessWidget {
             children: [
               _headerView(),
               _timerView(),
+              _crackerShow()],
               _entryView(),
               Container(
                 padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
@@ -208,5 +210,9 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _crackerShow() {
+    return Lottie.asset('assets/json/success.json');
   }
 }
