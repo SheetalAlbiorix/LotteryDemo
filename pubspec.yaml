@@ -24,6 +24,7 @@ dependencies:
   get_storage: ^2.0.3
   intl:
   lottie: ^1.1.0
+  roller_list: ^1.0.2
 
 dev_dependencies:
   flutter_test:
