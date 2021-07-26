@@ -19,13 +19,13 @@ class DashboardScreen extends StatefulWidget{
 
 class _DashboardScreenState extends State<DashboardScreen> with TickerProviderStateMixin{
   final _ctrl = Get.put(DashBoardController());
-  List<String> arEntry = ["99","03","36","16","17","88"];
+  List<String> arEntry = ["99","03","36","16","17","88","16","22","05","41","98","12"];
 
   final leftRoller = new GlobalKey<RollerListState>();
   final rightRoller = new GlobalKey<RollerListState>();
   final fourthRoller = new GlobalKey<RollerListState>();
   Timer? rotator;
-  Duration _ROTATION_DURATION = Duration(milliseconds: 300);
+  var _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
   int? first = 0, second = 0, third = 0, fourth = 0;
@@ -33,17 +33,6 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     //_ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
-    _ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
-
-    /* @override
-
-  void dispose() {
-    rotator?.cancel();
-    super.dispose();
-  }
-*/
-
-    _ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
 
     return Scaffold(
       body: SafeArea(
@@ -59,31 +48,32 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
               colors: <Color>[lightPurpleColor1,lightBorderColor1],
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _headerView(),
-              _timerView(),
-              // _crackerShow(),
-              /* slotMachine(),
-              GestureDetector(
-                onTap: (){
-                  _startRotating();
-                },
-                  child: TextView("click me",textColor: Colors.white,fontSize: 25,)),
-*/
-              //_crackerShow(),
-              _entryView(),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
-                height: 3,
-                decoration: BoxDecoration(
-                  color: lightWhiteTextColor,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _headerView(),
+                _timerView(),
+                // _crackerShow(),
+                 slotMachine(),
+                GestureDetector(
+                  onTap: (){
+                    _startRotating();
+                  },
+                    child: TextView("click me",textColor: Colors.white,fontSize: 25,)),
+                //_crackerShow(),
+                _entryView(),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: lightWhiteTextColor,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
                 ),
-              ),
-              _myEntryList(context),
-            ],
+                _myEntryList(context),
+              ],
+            ),
           ),
         ),
       ),
