@@ -13,6 +13,9 @@ const Color grayBgColor = Color(0xFF423b41);
 const Color blackTextColor = Color(0xFF14161c);
 const Color whiteColor = Color(0xFFffffff);
 const Color lightWhiteTextColor = Color(0xFF998098);
+const Color lightBorderColor = Color(0xFF592750);
+const Color lightBorderColor1 = Color(0xFF190926);
+const Color lightPurpleColor1 = Color(0xFF370243);
 
 
 const weeklyLotteryText="Weekly Lottery";

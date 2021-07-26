@@ -10,6 +10,8 @@ import 'package:lottie/lottie.dart';
 
 class DashboardScreen extends StatelessWidget {
   final _ctrl = Get.put(DashBoardController());
+  List<String> arEntry = ["99","03","36","16","17","88"];
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,8 @@ class DashboardScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomCenter,
-              colors: <Color>[darkPurpleColor, lightPurpleColor],
+              // colors: <Color>[darkPurpleColor, lightPurpleColor],
+              colors: <Color>[lightPurpleColor1,lightBorderColor1],
             ),
           ),
           child: Column(
@@ -43,7 +46,7 @@ class DashboardScreen extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
-              _myEntryList(),
+              _myEntryList(context),
             ],
           ),
         ),
@@ -185,7 +188,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _myEntryList() {
+  Widget _myEntryList(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: MySpace.spaceXL),
       child: Column(
@@ -206,35 +209,42 @@ class DashboardScreen extends StatelessWidget {
                 fontSize: 20,
               ),
             ],
-          )
+          ),
+          SizedBox(height: 10),
+          entryGridList(context)
         ],
       ),
+    );
+  }
+  
+  Widget entryGridList(BuildContext context){
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: arEntry.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 2 / (3 * MediaQuery.of(context).textScaleFactor/2.5),
+          crossAxisCount: 3,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0
+      ),
+      itemBuilder: (BuildContext context, int index){
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            border: Border.all(color: lightBorderColor,width: 3),
+
+          ),
+          child: Align(alignment:Alignment.center,child: TextView(arEntry[index],textColor: whiteColor,fontSize: 30)),
+        );
+      },
     );
   }
 
   /*Widget _crackerShow() {
     return Lottie.asset('assets/json/success.json');
   }*/
-
-  /*_winDialog(){
-    Get.defaultDialog(
-        backgroundColor:yellowBgColor,
-        title: "",
-        radius: 20,
-        content: Container(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Icon(Icons.close,color: blackTextColor,),
-              )
-            ],
-          ),
-
-        )
-    );
-  }*/
-
+  
   _winDialog(BuildContext context) {
     return showDialog(
         context: context,
