@@ -14,9 +14,8 @@ class DashBoardController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    startTimer(DateTime.now().add(Duration(seconds: 3)));
+    startTimer(DateTime.now().add(Duration(seconds: 6)));
   }
-
 
   @override
   void onClose(){
