@@ -7,7 +7,7 @@ import 'package:getx_flutter/base/base_controller.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
-import 'package:getx_flutter/views/dashboard/dashboard_binding.dart';
+import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
 import 'package:lottie/lottie.dart';
 import 'package:roller_list/roller_list.dart';
