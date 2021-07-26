@@ -34,10 +34,7 @@ flutter:
   assets:
     - assets/images/
     - assets/gif/loading_spinner.gif
-    - assets/json/provinsi.json
-    - assets/json/kabupaten.json
-    - assets/json/kecamatan.json
-    - assets/
+    - assets/json/
 
   fonts:
     - family: Roboto

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_view.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
+import 'package:lottie/lottie.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               _headerView(),
               _timerView(),
-            ],
+              _crackerShow()],
           ),
         ),
       ),
@@ -116,14 +117,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           height: MySpace.spaceXL,
         ),
         Row(
-          children: [
-            
-          ],
+          children: [],
         ),
         SizedBox(
           height: MySpace.spaceXL,
         ),
       ],
     );
+  }
+
+  Widget _crackerShow() {
+    return Lottie.asset('assets/json/success.json');
   }
 }
