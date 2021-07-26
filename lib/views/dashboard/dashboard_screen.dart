@@ -12,14 +12,28 @@ import 'package:getx_flutter/x_res/my_res.dart';
 import 'package:lottie/lottie.dart';
 import 'package:roller_list/roller_list.dart';
 
-class DashboardScreen extends StatefulWidget{
+class DashboardScreen extends StatefulWidget {
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> with TickerProviderStateMixin{
+class _DashboardScreenState extends State<DashboardScreen>
+    with TickerProviderStateMixin {
   final _ctrl = Get.put(DashBoardController());
-  List<String> arEntry = ["99","03","36","16","17","88","16","22","05","41","98","12"];
+  List<String> arEntry = [
+    "99",
+    "03",
+    "36",
+    "16",
+    "17",
+    "88",
+    "16",
+    "22",
+    "05",
+    "41",
+    "98",
+    "12"
+  ];
 
   final leftRoller = new GlobalKey<RollerListState>();
   final rightRoller = new GlobalKey<RollerListState>();
@@ -44,8 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomCenter,
-              // colors: <Color>[darkPurpleColor, lightPurpleColor],
-              colors: <Color>[lightPurpleColor1,lightBorderColor1],
+              colors: <Color>[lightPurpleColor1, lightBorderColor1],
             ),
           ),
           child: SingleChildScrollView(
@@ -55,12 +68,17 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                 _headerView(),
                 _timerView(),
                 // _crackerShow(),
-                 slotMachine(),
+                slotMachine(),
                 GestureDetector(
-                  onTap: (){
-                    _startRotating();
-                  },
-                    child: TextView("click me",textColor: Colors.white,fontSize: 25,)),
+                    onTap: () {
+                      // _startRotating();
+                      _winDialog(context);
+                    },
+                    child: TextView(
+                      "click me",
+                      textColor: Colors.white,
+                      fontSize: 25,
+                    )),
                 //_crackerShow(),
                 _entryView(),
                 Container(
@@ -117,7 +135,8 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                 padding: EdgeInsets.symmetric(
                     horizontal: MySpace.spaceXL, vertical: MySpace.spaceL),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceL)),
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(MySpace.spaceL)),
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
@@ -199,7 +218,7 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
 
   Widget _entryView() {
     return Obx(
-          () => AnimatedSize(
+      () => AnimatedSize(
         //opacity: _ctrl.isHeaderVisible.value ? 1 : 0,
         curve: Curves.easeInOut,
         duration: Duration(seconds: 1),
@@ -242,12 +261,24 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                 textColor: whiteColor,
                 fontSize: 20,
               ),
-              SizedBox(width: MySpace.spaceL,),
-              TextView(
-                myEntriesText,
-                fontWeight: FontWeight.bold,
-                textColor: whiteColor,
-                fontSize: 20,
+              SizedBox(
+                width: MySpace.spaceL,
+              ),
+              Container(
+                height: 30,
+                width: 30,
+                decoration: new BoxDecoration(
+                  color: yellowBgColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: TextView(
+                    "4",
+                    fontWeight: FontWeight.bold,
+                    textColor: blackTextColor,
+                    fontSize: 20,
+                  ),
+                ),
               ),
             ],
           ),
@@ -258,25 +289,27 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
     );
   }
 
-  Widget entryGridList(BuildContext context){
+  Widget entryGridList(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: arEntry.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 2 / (3 * MediaQuery.of(context).textScaleFactor/2.5),
+          childAspectRatio:
+              2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
           crossAxisCount: 3,
           crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0
-      ),
-      itemBuilder: (BuildContext context, int index){
+          mainAxisSpacing: 8.0),
+      itemBuilder: (BuildContext context, int index) {
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            border: Border.all(color: lightBorderColor,width: 3),
-
+            border: Border.all(color: lightBorderColor, width: 3),
           ),
-          child: Align(alignment:Alignment.center,child: TextView(arEntry[index],textColor: whiteColor,fontSize: 30)),
+          child: Align(
+              alignment: Alignment.center,
+              child: TextView(arEntry[index],
+                  textColor: whiteColor, fontSize: 30)),
         );
       },
     );
@@ -287,78 +320,89 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
   }
 
   Widget slotMachine() {
-    return Container(
-      width: double.infinity,
-      height: 40,
-      color: Colors.white,
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: RollerList(
-              items: slots,
-              enabled: false,
-              key: leftRoller,
-              onSelectedIndexChanged: (value) {
-                /*setState(() {
+    return Obx(
+      () => AnimatedOpacity(
+        opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
+        curve: Curves.easeInOut,
+        duration: Duration(seconds: 1),
+        child: Visibility(
+          visible: !_ctrl.isHeaderVisible.value,
+          child: Container(
+            width: double.infinity,
+            //height: _ctrl.isHeaderVisible.value ? 0 : 40,
+            height: 40,
+            color: Colors.white,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: RollerList(
+                    items: slots,
+                    enabled: false,
+                    key: leftRoller,
+                    onSelectedIndexChanged: (value) {
+                      /*setState(() {
                   first = value - 1;
                 });*/
-              },
-            ),
-          ),
-          VerticalDivider(
-            width: 2,
-            color: Colors.black,
-          ),
-          Expanded(
-            flex: 1,
-            child: RollerList(
-              items: slots,
-              scrollType: ScrollType.goesOnlyBottom,
-              onSelectedIndexChanged: (value) {
-                /*setState(() {
+                    },
+                  ),
+                ),
+                VerticalDivider(
+                  width: 2,
+                  color: Colors.black,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: RollerList(
+                    items: slots,
+                    scrollType: ScrollType.goesOnlyBottom,
+                    onSelectedIndexChanged: (value) {
+                      /*setState(() {
                   second = value - 1;
                 });*/
-                _finishRotating();
-              },
-              onScrollStarted: _startRotating,
-            ),
-          ),
-          VerticalDivider(
-            width: 2,
-            color: Colors.black,
-          ),
-          Expanded(
-            flex: 1,
-            child: RollerList(
-              enabled: false,
-              items: slots,
-              key: rightRoller,
-              onSelectedIndexChanged: (value) {
-                /* setState(() {
+                      _finishRotating();
+                    },
+                    onScrollStarted: _startRotating,
+                  ),
+                ),
+                VerticalDivider(
+                  width: 2,
+                  color: Colors.black,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: RollerList(
+                    enabled: false,
+                    items: slots,
+                    key: rightRoller,
+                    onSelectedIndexChanged: (value) {
+                      /* setState(() {
                   third = value - 1;
                 });*/
-              },
-            ),
-          ),
-          VerticalDivider(
-            width: 2,
-            color: Colors.black,
-          ),
-          Expanded(
-            flex: 1,
-            child: RollerList(
-              enabled: false,
-              items: slots,
-              key: fourthRoller,
-              onSelectedIndexChanged: (value) {
-                /*setState(() {
+                    },
+                  ),
+                ),
+                VerticalDivider(
+                  width: 2,
+                  color: Colors.black,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: RollerList(
+                    enabled: false,
+                    items: slots,
+                    key: fourthRoller,
+                    onSelectedIndexChanged: (value) {
+                      /*setState(() {
                   fourth = value - 1;
                 });*/
-              },
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -432,10 +476,9 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [yellowBgColor,gradientyellow2Color]
-                      ),
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [yellowBgColor, gradientyellow2Color]),
                       borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     ),
                     child: Column(
@@ -456,17 +499,18 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                         Align(
                           alignment: Alignment.center,
                           child: Container(
-                            padding: EdgeInsets.only(left: 55,right: 55,top: 15,bottom: 15),
-                            decoration: BoxDecoration(
-                              color: yellowBgColor,
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                            ),
-                            child: Text("\$50",
-                                style: TextStyle(
-                                    color: blackTextColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25))
-                          ),
+                              padding: EdgeInsets.only(
+                                  left: 55, right: 55, top: 15, bottom: 15),
+                              decoration: BoxDecoration(
+                                color: yellowBgColor,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              child: Text("\$50",
+                                  style: TextStyle(
+                                      color: blackTextColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25))),
                         ),
                         SizedBox(height: 20),
                         Align(
@@ -479,9 +523,8 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                                   fontSize: 15)),
                         ),
                         Text(yourEmployerText,
-                            style: TextStyle(
-                                color: blackTextColor,
-                                fontSize: 14)),
+                            style:
+                                TextStyle(color: blackTextColor, fontSize: 14)),
                       ],
                     ),
                   ),
@@ -489,7 +532,7 @@ class _DashboardScreenState extends State<DashboardScreen> with TickerProviderSt
                     top: 10.0,
                     right: 10.0,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
                       child: Icon(
