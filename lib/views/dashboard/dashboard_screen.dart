@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getx_flutter/base/base_controller.dart';
@@ -13,38 +14,27 @@ import 'package:roller_list/roller_list.dart';
 
 class DashboardScreen extends StatelessWidget {
   final _ctrl = Get.put(DashBoardController());
-
-  @override
-  _DashboardScreenState createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
   final leftRoller = new GlobalKey<RollerListState>();
   final rightRoller = new GlobalKey<RollerListState>();
   final fourthRoller = new GlobalKey<RollerListState>();
   Timer? rotator;
-  static const _ROTATION_DURATION = Duration(milliseconds: 300);
+  Duration _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
-  int? first, second, third, fourth;
+  int? first = 0, second = 0, third = 0, fourth = 0;
 
   @override
-  void initState() {
-    first = 0;
-    second = 0;
-    third = 0;
-    fourth = 0;
-    super.initState();
-  }
+  Widget build(BuildContext context) {
+    _ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
 
-  @override
+    /* @override
+
   void dispose() {
     rotator?.cancel();
     super.dispose();
   }
+*/
 
-  @override
-  Widget build(BuildContext context) {
     _ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
 
     return Scaffold(
@@ -65,14 +55,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               _headerView(),
               _timerView(),
-              _crackerShow(),
-              /*  slotMachine(),
+              // _crackerShow(),
+              /* slotMachine(),
               GestureDetector(
                 onTap: (){
                   _startRotating();
                 },
-                  child: TextView("click me",textColor: Colors.white,fontSize: 25,))*/
-            ],
+                  child: TextView("click me",textColor: Colors.white,fontSize: 25,)),
+*/
               //_crackerShow(),
               _entryView(),
               Container(
@@ -252,9 +242,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  /*Widget _crackerShow() {
+  Widget _crackerShow() {
     return Lottie.asset('assets/json/success.json');
-  }*/
+  }
 
   Widget slotMachine() {
     return Row(
@@ -266,9 +256,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             enabled: false,
             key: leftRoller,
             onSelectedIndexChanged: (value) {
-              setState(() {
+              /*setState(() {
                 first = value - 1;
-              });
+              });*/
             },
           ),
         ),
@@ -282,9 +272,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             items: slots,
             scrollType: ScrollType.goesOnlyBottom,
             onSelectedIndexChanged: (value) {
-              setState(() {
+              /*setState(() {
                 second = value - 1;
-              });
+              });*/
               _finishRotating();
             },
             onScrollStarted: _startRotating,
@@ -301,9 +291,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             items: slots,
             key: rightRoller,
             onSelectedIndexChanged: (value) {
-              setState(() {
+              /* setState(() {
                 third = value - 1;
-              });
+              });*/
             },
           ),
         ),
@@ -318,9 +308,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             items: slots,
             key: fourthRoller,
             onSelectedIndexChanged: (value) {
-              setState(() {
+              /*setState(() {
                 fourth = value - 1;
-              });
+              });*/
             },
           ),
         ),
