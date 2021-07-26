@@ -1,20 +1,14 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'base_controller.dart';
 
-/// createdby Daewu Bintara
-/// Friday, 1/29/21
-
-///
-/// --------------------------------------------
-/// There are many amazing [Function]s in this class.
-/// Especialy in user interactions.
-/// You can find and use on your Controller wich is the Controller extends [BaseController].
 class BaseCommonWidgets implements _CommonWidgetsInterface {
-
   @override
   void showSnackBar({String title = "", String message = ""}) {
-    Get.snackbar(title, message,
+    Get.snackbar(
+      title,
+      message,
       backgroundColor: Colors.black45,
       barBlur: 8.0,
       snackPosition: SnackPosition.BOTTOM,

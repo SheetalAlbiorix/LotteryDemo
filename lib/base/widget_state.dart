@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'base_view_view_model.dart';
+
 import 'base_controller.dart';
+import 'base_view_view_model.dart';
 
 enum State {
   OK,
@@ -8,14 +9,6 @@ enum State {
   LOADING
 }
 
-/// createdby Daewu Bintara
-/// Saturday, 1/30/21
-
-///
-/// --------------------------------------------
-/// There are several [State]s in this class.
-/// The [Function]s and [State]s in this class are only to be used in classes that extend in [BaseViewModel].
-/// You can find and use on your Controller wich is the Controller extends [BaseController].
 class WidgetState {
   Rx<State> _widgetState = State.LOADING.obs;
   Rx<State> stateLoading = State.LOADING.obs;
@@ -35,11 +28,6 @@ class WidgetState {
 }
 
 
-///
-/// --------------------------------------------
-/// There are several [State]s in this class.
-/// The [Function]s and [State]s in this class are only to be used in classes that extend in [BaseView].
-/// You can find and use on your Controller wich is the Controller extends [BaseController].
 class ScreenState {
   State _screenState = State.LOADING;
   State screenStateLoading = State.LOADING;

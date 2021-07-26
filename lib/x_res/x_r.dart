@@ -1,5 +1,3 @@
-/// createdby Daewu Bintara
-/// Monday, 2/1/21
 import 'package:get/get.dart';
 
 class XR {
@@ -12,7 +10,6 @@ class _AssetsImage {
   static const String images = 'assets/images/';
 
   String img_logo = images + 'img_logo.png';
-  String apple_logo = images + '1.png';
 }
 
 class _String {

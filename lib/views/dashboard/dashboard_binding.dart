@@ -21,7 +21,6 @@ class DashBoardController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    MyTranslations.init();
   }
 
 

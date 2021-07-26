@@ -1,6 +1,3 @@
-/// createdby Daewu Bintara
-/// Friday, 1/22/21
-
 import 'dart:convert';
 
 class Member {
