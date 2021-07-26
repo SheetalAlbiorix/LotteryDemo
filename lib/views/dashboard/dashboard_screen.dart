@@ -21,7 +21,7 @@ class DashboardScreen extends StatelessWidget {
   Duration _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
-  int? first = 0, second = 0, third = 0, fourth = 0;
+  int? first = 0, second = 0, third = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +56,16 @@ class DashboardScreen extends StatelessWidget {
               _headerView(),
               _timerView(),
               // _crackerShow(),
-              /* slotMachine(),
+              slotMachine(),
               GestureDetector(
-                onTap: (){
-                  _startRotating();
-                },
-                  child: TextView("click me",textColor: Colors.white,fontSize: 25,)),
-*/
+                  onTap: () {
+                    _startRotating();
+                  },
+                  child: TextView(
+                    "click me",
+                    textColor: Colors.white,
+                    fontSize: 25,
+                  )),
               //_crackerShow(),
               _entryView(),
               Container(
@@ -247,74 +250,79 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget slotMachine() {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: RollerList(
-            items: slots,
-            enabled: false,
-            key: leftRoller,
-            onSelectedIndexChanged: (value) {
-              /*setState(() {
-                first = value - 1;
-              });*/
-            },
+    return Container(
+      width: double.infinity,
+      height: 40,
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: RollerList(
+              items: slots,
+              enabled: false,
+              key: leftRoller,
+              onSelectedIndexChanged: (value) {
+                /*setState(() {
+                  first = value - 1;
+                });*/
+              },
+            ),
           ),
-        ),
-        VerticalDivider(
-          width: 2,
-          color: Colors.black,
-        ),
-        Expanded(
-          flex: 1,
-          child: RollerList(
-            items: slots,
-            scrollType: ScrollType.goesOnlyBottom,
-            onSelectedIndexChanged: (value) {
-              /*setState(() {
-                second = value - 1;
-              });*/
-              _finishRotating();
-            },
-            onScrollStarted: _startRotating,
+          VerticalDivider(
+            width: 2,
+            color: Colors.black,
           ),
-        ),
-        VerticalDivider(
-          width: 2,
-          color: Colors.black,
-        ),
-        Expanded(
-          flex: 1,
-          child: RollerList(
-            enabled: false,
-            items: slots,
-            key: rightRoller,
-            onSelectedIndexChanged: (value) {
-              /* setState(() {
-                third = value - 1;
-              });*/
-            },
+          Expanded(
+            flex: 1,
+            child: RollerList(
+              items: slots,
+              scrollType: ScrollType.goesOnlyBottom,
+              onSelectedIndexChanged: (value) {
+                /*setState(() {
+                  second = value - 1;
+                });*/
+                _finishRotating();
+              },
+              onScrollStarted: _startRotating,
+            ),
           ),
-        ),
-        VerticalDivider(
-          width: 2,
-          color: Colors.black,
-        ),
-        Expanded(
-          flex: 1,
-          child: RollerList(
-            enabled: false,
-            items: slots,
-            key: fourthRoller,
-            onSelectedIndexChanged: (value) {
-              /*setState(() {
-                fourth = value - 1;
-              });*/
-            },
+          VerticalDivider(
+            width: 2,
+            color: Colors.black,
           ),
-        ),
-      ],
+          Expanded(
+            flex: 1,
+            child: RollerList(
+              enabled: false,
+              items: slots,
+              key: rightRoller,
+              onSelectedIndexChanged: (value) {
+                /* setState(() {
+                  third = value - 1;
+                });*/
+              },
+            ),
+          ),
+          VerticalDivider(
+            width: 2,
+            color: Colors.black,
+          ),
+          Expanded(
+            flex: 1,
+            child: RollerList(
+              enabled: false,
+              items: slots,
+              key: fourthRoller,
+              onSelectedIndexChanged: (value) {
+                /*setState(() {
+                  fourth = value - 1;
+                });*/
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -343,12 +351,10 @@ class DashboardScreen extends StatelessWidget {
       result.add(Container(
         padding: EdgeInsets.all(15.0),
         color: Colors.white,
-        child: Image.asset(
-          XR().assetsImage.img_logo,
-          width: 25,
-          height: 25,
+        child: TextView(
+          i.toString(),
+          fontSize: 10,
         ),
-        //   TextView(i.toString()),
       ));
     }
     return result;
