@@ -39,7 +39,7 @@ class TestScreen extends BaseView<TestController> {
             Text("${controller.count}"),
             controller.member.id == null
                 ? Text("${controller.count}")
-                : Text("${controller.member?.name}"),
+                : Text("${controller.member.name}"),
             FlatButton(
               child: Text("Member",
                 style: AppThemes().general().textTheme.bodyText1,
@@ -80,5 +80,7 @@ class TestScreen extends BaseView<TestController> {
         ),
       );
   }
+
+
 
 }
