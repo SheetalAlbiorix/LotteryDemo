@@ -3,11 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../currency_input_formater.dart';
 
-/**
- * Created by daewubintara on
- * 11, September 2020 08.34
- */
-
 // ignore: must_be_immutable
 class MyTextFormField extends StatelessWidget {
 

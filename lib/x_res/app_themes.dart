@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
 import 'my_res.dart';
 
-
-/// Created by daewubintara on
-/// 08, September 2020 16.17
 
 class AppThemes {
   final String _sThemeModeKey = 'S_THEME_MODE_KEY';

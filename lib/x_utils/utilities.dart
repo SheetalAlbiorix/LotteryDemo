@@ -3,13 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../x_res/my_res.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Created by daewubintara on
-/// 09, September 2020 11.03
+import '../x_res/my_res.dart';
 
 ///
 /// --------------------------------------------
@@ -17,7 +15,6 @@ import 'package:url_launcher/url_launcher.dart';
 /// Especialy in [Function]ality.
 /// You can find and use on your Controller wich is the Controller extends [BaseController].
 class Utilities {
-
   void callPhoneNumber({String phone = "0"}) async {
     launch("tel://${phone}");
   }

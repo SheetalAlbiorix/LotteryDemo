@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       locale: MyTranslations.locale,
       fallbackLocale: MyTranslations.fallbackLocale,
       translations: MyTranslations(),
-      initialRoute: RouterName.main_home,
+      initialRoute: RouterName.test,
       debugShowCheckedModeBanner: false,
       getPages: Pages.pages(),
     );
