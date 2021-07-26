@@ -7,37 +7,32 @@ import 'package:getx_flutter/base/base_controller.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
-import 'package:getx_flutter/views/dashboard/dashboard_binding.dart';
+import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
 import 'package:lottie/lottie.dart';
 import 'package:roller_list/roller_list.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget{
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> with TickerProviderStateMixin{
   final _ctrl = Get.put(DashBoardController());
-  List<String> arEntry = ["99","03","36","16","17","88"];
+  List<String> arEntry = ["99","03","36","16","17","88","16","22","05","41","98","12"];
 
   final leftRoller = new GlobalKey<RollerListState>();
   final rightRoller = new GlobalKey<RollerListState>();
   final fourthRoller = new GlobalKey<RollerListState>();
   Timer? rotator;
-  Duration _ROTATION_DURATION = Duration(milliseconds: 300);
+  var _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
   int? first = 0, second = 0, third = 0;
 
   @override
   Widget build(BuildContext context) {
-    _ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
-
-    /* @override
-
-  void dispose() {
-    rotator?.cancel();
-    super.dispose();
-  }
-*/
-
-    _ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
+    //_ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
 
     return Scaffold(
       body: SafeArea(
@@ -53,34 +48,32 @@ class DashboardScreen extends StatelessWidget {
               colors: <Color>[lightPurpleColor1,lightBorderColor1],
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _headerView(),
-              _timerView(),
-              // _crackerShow(),
-              slotMachine(),
-              GestureDetector(
-                  onTap: () {
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _headerView(),
+                _timerView(),
+                // _crackerShow(),
+                 slotMachine(),
+                GestureDetector(
+                  onTap: (){
                     _startRotating();
                   },
-                  child: TextView(
-                    "click me",
-                    textColor: Colors.white,
-                    fontSize: 25,
-                  )),
-              //_crackerShow(),
-              _entryView(),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
-                height: 3,
-                decoration: BoxDecoration(
-                  color: lightWhiteTextColor,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                    child: TextView("click me",textColor: Colors.white,fontSize: 25,)),
+                //_crackerShow(),
+                _entryView(),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: lightWhiteTextColor,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
                 ),
-              ),
-              _myEntryList(context),
-            ],
+                _myEntryList(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -89,76 +82,80 @@ class DashboardScreen extends StatelessWidget {
 
   Widget _headerView() {
     return Obx(
-      () => AnimatedOpacity(
-        opacity: _ctrl.isHeaderVisible.value ? 1 : 0,
+      () => AnimatedSize(
+        //opacity: _ctrl.isHeaderVisible.value ? 1 : 0,
         curve: Curves.easeInOut,
-        duration: Duration(milliseconds: 1000),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: MySpace.spaceL,
-            ),
-            TextView(
-              weeklyLotteryText.toUpperCase(),
-              fontWeight: FontWeight.bold,
-              textColor: whiteColor,
-              fontSize: 24,
-            ),
-            SizedBox(
-              height: MySpace.spaceL,
-            ),
-            TextView(
-              playNowChanceText,
-              textColor: whiteColor.withOpacity(.7),
-              fontSize: 16,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: MySpace.spaceXL,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MySpace.spaceXL, vertical: MySpace.spaceL),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceL)),
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: <Color>[
-                    whiteColor.withOpacity(0.1),
-                    lightPurpleColor.withOpacity(0.5)
+        duration: Duration(seconds: 1),
+        vsync: this,
+        child: SizedBox(
+          height: _ctrl.isHeaderVisible.value ? 220 : 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: MySpace.spaceL,
+              ),
+              TextView(
+                weeklyLotteryText.toUpperCase(),
+                fontWeight: FontWeight.bold,
+                textColor: whiteColor,
+                fontSize: 24,
+              ),
+              SizedBox(
+                height: MySpace.spaceL,
+              ),
+              TextView(
+                playNowChanceText,
+                textColor: whiteColor.withOpacity(.7),
+                fontSize: 16,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: MySpace.spaceXL,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MySpace.spaceXL, vertical: MySpace.spaceL),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceL)),
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      whiteColor.withOpacity(0.1),
+                      lightPurpleColor.withOpacity(0.5)
+                    ],
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    TextView(
+                      jackpotText,
+                      fontWeight: FontWeight.bold,
+                      textColor: whiteColor,
+                      fontSize: 20,
+                    ),
+                    Spacer(),
+                    TextView(
+                      "\$",
+                      fontWeight: FontWeight.bold,
+                      textColor: whiteColor,
+                      fontSize: 18,
+                    ),
+                    SizedBox(
+                      width: MySpace.spaceS,
+                    ),
+                    TextView(
+                      "50",
+                      fontWeight: FontWeight.bold,
+                      textColor: whiteColor,
+                      fontSize: 30,
+                    ),
                   ],
                 ),
               ),
-              child: Row(
-                children: [
-                  TextView(
-                    jackpotText,
-                    fontWeight: FontWeight.bold,
-                    textColor: whiteColor,
-                    fontSize: 20,
-                  ),
-                  Spacer(),
-                  TextView(
-                    "\$",
-                    fontWeight: FontWeight.bold,
-                    textColor: whiteColor,
-                    fontSize: 18,
-                  ),
-                  SizedBox(
-                    width: MySpace.spaceS,
-                  ),
-                  TextView(
-                    "50",
-                    fontWeight: FontWeight.bold,
-                    textColor: whiteColor,
-                    fontSize: 30,
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -201,22 +198,33 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget _entryView() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: MySpace.spaceXL),
-      child: Column(
-        children: [
-          CustomTextField(
-            hint: submitEntryText,
+    return Obx(
+          () => AnimatedSize(
+        //opacity: _ctrl.isHeaderVisible.value ? 1 : 0,
+        curve: Curves.easeInOut,
+        duration: Duration(seconds: 1),
+        vsync: this,
+        child: SizedBox(
+          height: _ctrl.isHeaderVisible.value ? 220 : 0,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: MySpace.spaceXL),
+            child: Column(
+              children: [
+                CustomTextField(
+                  hint: submitEntryText,
+                ),
+                SizedBox(
+                  height: MySpace.spaceM,
+                ),
+                TextView(
+                  "0 ${remainingText.toLowerCase()}",
+                  textColor: whiteColor,
+                  fontSize: 18,
+                ),
+              ],
+            ),
           ),
-          SizedBox(
-            height: MySpace.spaceM,
-          ),
-          TextView(
-            "0 ${remainingText.toLowerCase()}",
-            textColor: whiteColor,
-            fontSize: 18,
-          ),
-        ],
+        ),
       ),
     );
   }
