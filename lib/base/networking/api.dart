@@ -24,18 +24,18 @@ class ApiService {
   Future<Result> callManualy({
     @required Method method = Method.GET,
     @required String endPoint = "",
-    Map<String, String> param,
+    Map<String, String>? param,
     bool withToken = false
   }) async {
     return await _api.callManualy(method: method, endPoint: endPoint, param: param, withToken: withToken);
   }
 
-  Future<Result> getData({@required String endPoint = "", Map<String, String> query, bool withToken = false}) async {
-    return await _api.getData(endPoint: endPoint, query: query, withToken: withToken);
+  Future<Result> getData({@required String endPoint = "", Map<String, String>? query, bool withToken = false}) async {
+    return await _api.getData(endPoint: endPoint, query: query!, withToken: withToken);
   }
 
-  Future<Result> postData({@required String endPoint = "", Map data, bool withToken = false}) async {
-    return await _api.postData(endPoint: endPoint, data: data, withToken: withToken);
+  Future<Result> postData({@required String endPoint = "", Map? data, bool withToken = false}) async {
+    return await _api.postData(endPoint: endPoint, data: data!, withToken: withToken);
   }
 
 }
@@ -58,7 +58,7 @@ class _Api extends GetConnect {
     String deviceId = await MyDeviceInfo().deviceID();
     String deviceName = await MyDeviceInfo().deviceName();
     String pf = Platform.operatingSystem;
-    httpClient.addRequestModifier((request) {
+    /*httpClient.addRequestModifier((request) {
       request.headers['platform'] = pf;
       request.headers['device-id'] = "$deviceId";
       request.headers['device-name'] = "$deviceName";
@@ -68,7 +68,7 @@ class _Api extends GetConnect {
       }
       _showLogWhenDebug("HEADERS",request.headers.toString());
       return request;
-    });
+    });*/
     super.onInit();
   }
 
@@ -77,13 +77,13 @@ class _Api extends GetConnect {
   Future<Result> callManualy({
     @required Method method = Method.GET,
     @required String endPoint = "",
-    Map<String, String> param,
+    Map<String, String>? param,
     bool withToken = false
   }) async {
     _withToken = withToken;
-    await onInit();
+     onInit();
 
-    _showLogWhenDebug(method == Method.GET ? "GET" : "POST",httpClient.baseUrl+API_NAME+endPoint);
+    _showLogWhenDebug(method == Method.GET ? "GET" : "POST",httpClient.baseUrl!+API_NAME+endPoint);
     _showLogWhenDebug("PARAMS",query.toString());
     _showLogWhenDebug("TOKEN",_withToken.toString());
     try {
@@ -117,24 +117,24 @@ class _Api extends GetConnect {
 
   /// FOR NETWORKING WITH THE [Method.GET]
   /// RETURN DATA WITH [Result] MODEL
-  Future<Result> getData({@required String endPoint = "", Map<String, String> query, bool withToken = false}) async {
+  Future<Result> getData({@required String endPoint = "", Map<String, String>? query, bool withToken = false}) async {
     _withToken = withToken;
-    await onInit();
+     onInit();
 
-    _showLogWhenDebug("GET",httpClient.baseUrl+API_NAME+endPoint);
+    _showLogWhenDebug("GET",httpClient.baseUrl!+API_NAME+endPoint);
     _showLogWhenDebug("PARAMS",query.toString());
     _showLogWhenDebug("TOKEN",_withToken.toString());
     try {
 
       var res = await get(API_NAME+endPoint, query: query);
       if(res.isOk){
-        _showLogWhenDebug("LOADED",res.bodyString);
-        _result = Result.fromJson(res.bodyString);
+        _showLogWhenDebug("LOADED",res.bodyString!);
+        _result = Result.fromJson(res.bodyString!);
         _result.body = res.body;
         _showLogWhenDebug("PARSING","SUCCESS");
         return _result;
       } else {
-        _showLogWhenDebug("ERROR 0",res.bodyString);
+        _showLogWhenDebug("ERROR 0",res.bodyString!);
         _result.status = true;
         _result.isError = true;
         _result.text = "Terjadi kesalahan, coba beberapa saat lagi...";
@@ -150,23 +150,23 @@ class _Api extends GetConnect {
 
   /// FOR NETWORKING WITH [Method.POST]
   /// RETURN DATA WITH [Result] MODEL
-  Future<Result> postData({@required String endPoint = "", Map data, bool withToken = false}) async {
+  Future<Result> postData({@required String endPoint = "", Map? data, bool withToken = false}) async {
     _withToken = withToken;
-    await onInit();
+     onInit();
 
-    _showLogWhenDebug("POST",httpClient.baseUrl+API_NAME+endPoint);
+    _showLogWhenDebug("POST",httpClient.baseUrl!+API_NAME+endPoint);
     _showLogWhenDebug("PARAMS",data.toString());
     _showLogWhenDebug("TOKEN",_withToken.toString());
     try {
       var res = await httpClient.post(API_NAME+endPoint,body: data);
       if(res.isOk){
-        _showLogWhenDebug("LOADED",res.bodyString);
-        _result = Result.fromJson(res.bodyString);
+        _showLogWhenDebug("LOADED",res.bodyString!);
+        _result = Result.fromJson(res.bodyString!);
         _result.body = res.body;
         _showLogWhenDebug("PARSING","SUCCESS");
         return _result;
       } else {
-        _showLogWhenDebug("ERROR 0",res.bodyString);
+        _showLogWhenDebug("ERROR 0",res.bodyString!);
         _result.status = true;
         _result.isError = true;
         _result.text = "Terjadi kesalahan, coba beberapa saat lagi...";

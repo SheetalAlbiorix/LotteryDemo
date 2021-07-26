@@ -18,7 +18,7 @@ class HomeController extends BaseController {
   void onInit() {
     super.onInit();
     MyTranslations.init();
-    logWhenDebug("CURRENT LANGUAGE : ", Get.locale.languageCode.toString());
+    // logWhenDebug("CURRENT LANGUAGE : ", Get.locale.languageCode.toString());
   }
 
 }

@@ -71,7 +71,7 @@ class TestController extends BaseController {
         confirmTextColor: Colors.white,
         textConfirm: "Okee",
         textCancel: "Batal",
-        onWillPop: () {},
+        // onWillPop: () {},
         onConfirm: (){
           hideDialog();
         },

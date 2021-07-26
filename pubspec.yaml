@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.3
 
   # UTILITIES
   device_info: ^2.0.2

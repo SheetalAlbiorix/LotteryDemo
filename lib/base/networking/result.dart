@@ -16,11 +16,11 @@ class Result<T> {
     this.isError = false,
   });
 
-  bool status;
-  bool isError;
+  bool? status;
+  bool? isError;
   var rc;
-  String text;
-  String messages;
+  String? text;
+  String? messages;
 
   /// TO PARSE INTO MODEL USE .fromMap()
   T body;
