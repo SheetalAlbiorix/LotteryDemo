@@ -81,15 +81,6 @@ class TestScreen extends BaseView<TestController> {
       );
   }
 
-  _winDialog(){
-    Get.defaultDialog(
-      radius: 20,
-      content: Container(
-        decoration: BoxDecoration(
 
-        ),
-      )
-    );
-  }
 
 }
