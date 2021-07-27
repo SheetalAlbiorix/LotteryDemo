@@ -7,7 +7,6 @@ import 'package:getx_flutter/base/base_controller.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
-import 'package:getx_flutter/models/listData.dart';
 import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
 import 'package:lottie/lottie.dart';
@@ -22,38 +21,20 @@ class _DashboardScreenState extends State<DashboardScreen>
     with TickerProviderStateMixin {
   final _ctrl = Get.put(DashBoardController());
 
-  List<ListData> _listData = [
-    ListData(title: "99", isSelected: false),
-    ListData(title: "03", isSelected: false),
-    ListData(title: "36", isSelected: false),
-    ListData(title: "16", isSelected: false),
-    ListData(title: "17", isSelected: false),
-    ListData(title: "88", isSelected: false),
-    ListData(title: "16", isSelected: false),
-    ListData(title: "22", isSelected: false),
-    ListData(title: "05", isSelected: false),
-    ListData(title: "41", isSelected: false),
-    ListData(title: "98", isSelected: false),
-    ListData(title: "12", isSelected: false)
-  ].obs;
-
   final leftRoller = new GlobalKey<RollerListState>();
   final rightRoller = new GlobalKey<RollerListState>();
   final fourthRoller = new GlobalKey<RollerListState>();
   Timer? rotator;
-  var _ROTATION_DURATION = Duration(milliseconds: 300);
+  var rotationDuration = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
   int? first = 10, second = 10, third = 10;
 
   late Animation<double> animation;
   late AnimationController controller;
-  bool animated = false;
 
   @override
   Widget build(BuildContext context) {
-    //_ctrl.startTimer(DateTime.now().add(Duration(seconds: 3)));
-
     controller =
         AnimationController(duration: const Duration(seconds: 1), vsync: this);
     animation = Tween<double>(begin: 30, end: 40).animate(controller)
@@ -85,36 +66,30 @@ class _DashboardScreenState extends State<DashboardScreen>
                 _timerView(),
                 // _crackerShow(),
                 slotMachine(),
-                GestureDetector(
-                    onTap: () {
-                      _startRotating();
-                      /* setState(() {
-                        _listData[0].isSelected = true;
-                        _ctrl.textSize.value = 60.0;
-                        animated = !animated;
-                      });*/
-                      //_winDialog(context);
-                    },
-                    child: TextView(
-                      "click me",
-                      textColor: Colors.white,
-                      fontSize: 25,
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      _finishRotating();
-                      /* setState(() {
-                        _listData[0].isSelected = true;
-                        _ctrl.textSize.value = 60.0;
-                        animated = !animated;
-                      });*/
-                      //_winDialog(context);
-                    },
-                    child: TextView(
-                      "Stop",
-                      textColor: Colors.white,
-                      fontSize: 25,
-                    )),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _ctrl.startItemAnimation("16");
+                      },
+                      child: TextView(
+                        "click me",
+                        textColor: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _ctrl.startItemAnimation("22");
+                      },
+                      child: TextView(
+                        "click me1",
+                        textColor: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ],
+                ),
                 //_crackerShow(),
                 _entryView(),
                 Container(
@@ -137,9 +112,8 @@ class _DashboardScreenState extends State<DashboardScreen>
   Widget _headerView() {
     return Obx(
       () => AnimatedSize(
-        //opacity: _ctrl.isHeaderVisible.value ? 1 : 0,
         curve: Curves.easeInOut,
-        duration: Duration(seconds: 1),
+        duration: Duration(seconds: 2),
         vsync: this,
         child: SizedBox(
           height: _ctrl.isHeaderVisible.value ? 220 : 0,
@@ -169,16 +143,19 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               Container(
                 padding: EdgeInsets.symmetric(
-                    horizontal: MySpace.spaceXL, vertical: MySpace.spaceL),
+                  horizontal: MySpace.spaceXL,
+                  vertical: MySpace.spaceL,
+                ),
                 decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(MySpace.spaceL)),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(MySpace.spaceL),
+                  ),
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: <Color>[
                       whiteColor.withOpacity(0.1),
-                      lightPurpleColor.withOpacity(0.5)
+                      lightPurpleColor.withOpacity(0.5),
                     ],
                   ),
                 ),
@@ -255,9 +232,8 @@ class _DashboardScreenState extends State<DashboardScreen>
   Widget _entryView() {
     return Obx(
       () => AnimatedSize(
-        //opacity: _ctrl.isHeaderVisible.value ? 1 : 0,
         curve: Curves.easeInOut,
-        duration: Duration(seconds: 1),
+        duration: Duration(seconds: 2),
         vsync: this,
         child: SizedBox(
           height: _ctrl.isHeaderVisible.value ? 220 : 0,
@@ -319,60 +295,64 @@ class _DashboardScreenState extends State<DashboardScreen>
             ],
           ),
           SizedBox(height: 10),
-          entryGridList(context)
+          entryGridList(context),
         ],
       ),
     );
   }
 
   Widget entryGridList(BuildContext context) {
-    return Obx(() => GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: _listData.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio:
-                2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
-            crossAxisCount: 3,
-            crossAxisSpacing: 8.0,
-            mainAxisSpacing: 8.0,
-          ),
-          itemBuilder: (
-            BuildContext context,
-            int index,
-          ) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                border: Border.all(color: lightBorderColor, width: 3),
-              ),
-              child: Align(
-                  alignment: Alignment.center,
-                  child: AnimatedDefaultTextStyle(
-                    child: Text(_listData[index].title!),
-                    style: _listData[index].isSelected!
-                        ? TextStyle(
-                            color: whiteColor,
-                            fontSize: _ctrl.textSize.value,
-                          )
-                        : TextStyle(
-                            color: whiteColor,
-                            fontSize: 30,
-                          ),
-                    duration: Duration(microseconds: 800),
-                    onEnd: () => {
-                      _ctrl.textSize.value = 30.0,
-                    },
-                  )
-                  /*child: TextView(
-                  _listData[index].title!,
-                  textColor: whiteColor,
-                  fontSize: animation.value,
-                ),*/
+    return Obx(
+      () => GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: _ctrl.listData.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio:
+              2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
+          crossAxisCount: 3,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              border: Border.all(color: lightBorderColor, width: 3),
+            ),
+            child: Align(
+              alignment: Alignment.center,
+              child: Stack(
+                children: [
+                  Center(
+                    child: AnimatedDefaultTextStyle(
+                      child: Text(_ctrl.listData[index].title!),
+                      style: TextStyle(
+                        color: _ctrl.listData[index].isAnimated
+                            ? yellowBgColor
+                            : whiteColor,
+                        fontSize: _ctrl.listData[index].isSelected!
+                            ? _ctrl.textSize.value
+                            : 30,
+                      ),
+                      duration: Duration(seconds: 1),
+                      onEnd: () => {
+                        _ctrl.stopItemAnimation(),
+                      },
+                    ),
                   ),
-            );
-          },
-        ));
+                  _ctrl.listData[index].isSelected!
+                      ? Center(
+                          child: Lottie.asset('assets/json/success.json'),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget _crackerShow() {
@@ -400,8 +380,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               Container(
                 width: double.infinity,
-                //height: _ctrl.isHeaderVisible.value ? 0 : 40,
-                height: 40,
+                height: 72,
                 color: Colors.transparent,
                 child: Row(
                   children: <Widget>[
@@ -418,26 +397,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                         },
                       ),
                     ),
-                    /* VerticalDivider(
-                      width: 2,
-                      color: Colors.black,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: RollerList(
-                        items: slots,
-                        scrollType: ScrollType.goesOnlyBottom,
-                        onSelectedIndexChanged: (value) {
-                          setState(() {
-                            second = 22;
-                          });
-                          _finishRotating();
-                        },
-                        onScrollStarted: _startRotating,
-                      ),
-                    ),*/
                     VerticalDivider(
-                      width: 2,
+                      width: MySpace.spaceM,
                       color: Colors.black,
                     ),
                     Expanded(
@@ -454,7 +415,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                     ),
                     VerticalDivider(
-                      width: 2,
+                      width: MySpace.spaceM,
                       color: Colors.black,
                     ),
                     Expanded(
@@ -463,11 +424,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                         enabled: false,
                         items: slots,
                         key: fourthRoller,
-                        onSelectedIndexChanged: (value) {
-                          /*setState(() {
-                      fourth = value - 1;
-                    });*/
-                        },
+                        onSelectedIndexChanged: (value) {},
                       ),
                     ),
                   ],
@@ -481,14 +438,14 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   void _startRotating() {
-    rotator = Timer.periodic(_ROTATION_DURATION, _rotateRoller);
+    rotator = Timer.periodic(rotationDuration, _rotateRoller);
   }
 
   void _rotateRoller(_) {
     final leftRotationTarget = _random.nextInt(3 * slots.length);
     final rightRotationTarget = _random.nextInt(3 * slots.length);
     leftRoller.currentState?.smoothScrollToIndex(leftRotationTarget,
-        duration: _ROTATION_DURATION, curve: Curves.linear);
+        duration: rotationDuration, curve: Curves.linear);
     /* rightRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
         duration: _ROTATION_DURATION, curve: Curves.linear);
     fourthRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
@@ -532,108 +489,107 @@ class _DashboardScreenState extends State<DashboardScreen>
     return result;
   }
 
-  /*_winDialog(){
-    Get.defaultDialog(
-        backgroundColor:yellowBgColor,
-        title: "",
-        radius: 20,
-        content: Container(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Icon(Icons.close,color: blackTextColor,),
-              )
-            ],
-          ),
-
-        )
-    );
-  }*/
-
   _winDialog(BuildContext context) {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              // backgroundColor: yellowBg1Color,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0))),
-              contentPadding: EdgeInsets.only(top: 0.0),
-              content: Stack(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [yellowBgColor, gradientyellow2Color]),
-                      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SizedBox(height: 20),
-                        Image.asset("assets/images/gift.png",
-                            height: 100, width: 100),
-                        SizedBox(height: 20),
-                        Text(youWonText,
-                            style: TextStyle(
-                                color: blackTextColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25)),
-                        SizedBox(height: 20),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                              padding: EdgeInsets.only(
-                                  left: 55, right: 55, top: 15, bottom: 15),
-                              decoration: BoxDecoration(
-                                color: yellowBgColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                              ),
-                              child: Text("\$50",
-                                  style: TextStyle(
-                                      color: blackTextColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25))),
-                        ),
-                        SizedBox(height: 20),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(whatsNextText,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: blackTextColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15)),
-                        ),
-                        Text(yourEmployerText,
-                            style:
-                                TextStyle(color: blackTextColor, fontSize: 14)),
-                      ],
-                    ),
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32.0)),
+          ),
+          contentPadding: EdgeInsets.only(top: 0.0),
+          content: Stack(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(20),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [yellowBgColor, gradientyellow2Color]),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(32.0),
                   ),
-                  Positioned(
-                    top: 10.0,
-                    right: 10.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: blackTextColor,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    Image.asset(
+                      "assets/images/gift.png",
+                      height: 100,
+                      width: 100,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      youWonText,
+                      style: TextStyle(
+                          color: blackTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
+                    ),
+                    SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: 55, right: 55, top: 15, bottom: 15),
+                        decoration: BoxDecoration(
+                          color: yellowBgColor,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Text(
+                          "\$50",
+                          style: TextStyle(
+                              color: blackTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
                       ),
                     ),
+                    SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        whatsNextText,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: blackTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      yourEmployerText,
+                      style: TextStyle(
+                        color: blackTextColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 10.0,
+                right: 10.0,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: blackTextColor,
                   ),
-                ],
-              ));
-        });
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
