@@ -204,11 +204,11 @@ class _DashboardScreenState extends State<DashboardScreen>
             color: Colors.transparent,
             child: Row(
               children: <Widget>[
-                _spinnerItem(_ctrl.value1, 1),
+                _spinnerItem(_ctrl.value1, 1000),
                 _spinnerDivider(),
-                _spinnerItem(_ctrl.value2, 2),
+                _spinnerItem(_ctrl.value2, 1200),
                 _spinnerDivider(),
-                _spinnerItem(_ctrl.value3, 3),
+                _spinnerItem(_ctrl.value3, 1400),
               ],
             ),
           ),
@@ -226,7 +226,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       child: AnimatedContainer(
         height: !_ctrl.isHeaderVisible.value ? MySpace.spinnerItemHeight : 0,
         curve: Curves.easeIn,
-        duration: Duration(seconds: duration),
+        duration: Duration(milliseconds: duration),
         decoration: BoxDecoration(
           color: darkPurpleColor,
           borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceM)),

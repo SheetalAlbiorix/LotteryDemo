@@ -41,7 +41,7 @@ class DashBoardController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    startTimer(DateTime.now().add(Duration(seconds: 3)));
+    //startTimer(DateTime.now().add(Duration(seconds: 6)));
   }
 
   @override
@@ -94,6 +94,13 @@ class DashBoardController extends BaseController {
         value.value = rng.nextInt(99).toDouble() + 1;
         if (timer.tick > timerMaxSeconds) {
           timer.cancel();
+          if (rollerCount == 0) {
+            value.value = 16;
+          } else if (rollerCount == 1) {
+            value.value = 22;
+          } else if (rollerCount == 2) {
+            value.value = 65;
+          }
           await Future.delayed(
             Duration(seconds: 1),
             () => {
