@@ -188,7 +188,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Obx(
       () => AnimatedSize(
         vsync: this,
-        //height: !_ctrl.isHeaderVisible.value ? 150 : 0,
         curve: Curves.easeIn,
         duration: Duration(seconds: 2),
         child: Column(
@@ -224,46 +223,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         ),
       ),
     );
-    /*return Obx(
-      () => AnimatedOpacity(
-        opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
-        curve: Curves.easeInOut,
-        duration: Duration(seconds: 1),
-        child: Visibility(
-          visible: !_ctrl.isHeaderVisible.value,
-          child: Column(
-            children: [
-              TextView(
-                thisWeekWinningNumberText,
-                textColor: Colors.white,
-                fontSize: MySpace.font20,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: MySpace.spaceM,
-              ),
-              Container(
-                width: double.infinity,
-                height: MySpace.spinnerItemHeight,
-                color: Colors.transparent,
-                child: Row(
-                  children: <Widget>[
-                    _spinnerItem(_ctrl.value1),
-                    _spinnerDivider(),
-                    _spinnerItem(_ctrl.value2),
-                    _spinnerDivider(),
-                    _spinnerItem(_ctrl.value3),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: MySpace.spaceM,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );*/
   }
 
   Widget _spinnerItem(Rx<double> value) {
