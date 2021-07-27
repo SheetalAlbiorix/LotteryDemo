@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +8,6 @@ import 'package:getx_flutter/helper/text_view.dart';
 import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
 import 'package:lottie/lottie.dart';
-import 'package:roller_list/roller_list.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -21,15 +17,6 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with TickerProviderStateMixin {
   final _ctrl = Get.put(DashBoardController());
-
-  final leftRoller = new GlobalKey<RollerListState>();
-  final rightRoller = new GlobalKey<RollerListState>();
-  final fourthRoller = new GlobalKey<RollerListState>();
-  Timer? rotator;
-  var rotationDuration = Duration(milliseconds: 300);
-  final List<Widget> slots = _getSlots();
-  Random _random = new Random();
-  int? first = 10, second = 10, third = 10;
 
   late Animation<double> animation;
   late AnimationController controller;
@@ -41,7 +28,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     animation = Tween<double>(begin: 30, end: 40).animate(controller)
       ..addListener(() {
         setState(() {
-          // The state that has changed here is the animation object’s value.
         });
       });
     controller.forward();
@@ -71,7 +57,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _startRotating();
                         _ctrl.startItemAnimation("16");
                       },
                       child: TextView(
@@ -86,22 +71,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                       },
                       child: TextView(
                         "click me1",
-                        textColor: Colors.white,
-                        fontSize: 25,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _finishRotating();
-                        /* setState(() {
-                        _listData[0].isSelected = true;
-                        _ctrl.textSize.value = 60.0;
-                        animated = !animated;
-                      });*/
-                        //_winDialog(context);
-                      },
-                      child: TextView(
-                        "Stop",
                         textColor: Colors.white,
                         fontSize: 25,
                       ),
@@ -445,57 +414,6 @@ class _DashboardScreenState extends State<DashboardScreen>
         width: MySpace.spaceM,
         color: Colors.black,
     );
-  }
-  void _startRotating() {
-    rotator = Timer.periodic(rotationDuration, _rotateRoller);
-  }
-
-  void _rotateRoller(_) {
-    final leftRotationTarget = _random.nextInt(3 * slots.length);
-    final rightRotationTarget = _random.nextInt(3 * slots.length);
-    leftRoller.currentState?.smoothScrollToIndex(leftRotationTarget,
-        duration: rotationDuration, curve: Curves.linear);
-    /* rightRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
-        duration: _ROTATION_DURATION, curve: Curves.linear);
-    fourthRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
-        duration: _ROTATION_DURATION, curve: Curves.linear);*/
-  }
-
-  void _finishRotating() {
-    rotator?.cancel();
-  }
-
-  static List<Widget> _getSlots() {
-    List<Widget> result = [];
-    List<int> arrylistdata = [
-      0,
-      99,
-      03,
-      36,
-      16,
-      17,
-      88,
-      16,
-      22,
-      05,
-      41,
-      98,
-      12
-    ];
-    for (int i = 0; i < arrylistdata.length; i++) {
-      result.add(Container(
-        /* decoration: BoxDecoration(
-          color: darkPurpleColor,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          border: Border.all(color: lightBorderColor, width: 3),
-        ),*/
-        child: Align(
-            alignment: Alignment.center,
-            child: TextView(arrylistdata[i].toString(),
-                textColor: whiteColor, fontSize: 30)),
-      ));
-    }
-    return result;
   }
 
   _winDialog(BuildContext context) {
