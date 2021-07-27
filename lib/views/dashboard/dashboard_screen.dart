@@ -186,49 +186,47 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget _slotMachineView() {
     return Obx(
-      () => AnimatedSize(
-        vsync: this,
-        curve: Curves.easeIn,
-        duration: Duration(seconds: 2),
-        child: Column(
-          children: [
-            TextView(
-              thisWeekWinningNumberText,
-              textColor: Colors.white,
-              fontSize: MySpace.font20,
-              textAlign: TextAlign.center,
+      () => Column(
+        children: [
+          TextView(
+            thisWeekWinningNumberText,
+            textColor: Colors.white,
+            fontSize: MySpace.font20,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: MySpace.spaceM,
+          ),
+          Container(
+            width: double.infinity,
+            //height: MySpace.spinnerItemHeight,
+            height: MySpace.spinnerItemHeight,
+            color: Colors.transparent,
+            child: Row(
+              children: <Widget>[
+                _spinnerItem(_ctrl.value1, 1),
+                _spinnerDivider(),
+                _spinnerItem(_ctrl.value2, 2),
+                _spinnerDivider(),
+                _spinnerItem(_ctrl.value3, 3),
+              ],
             ),
-            SizedBox(
-              height: MySpace.spaceM,
-            ),
-            Container(
-              width: double.infinity,
-              //height: MySpace.spinnerItemHeight,
-              height: !_ctrl.isHeaderVisible.value ? MySpace.spinnerItemHeight : 0,
-              color: Colors.transparent,
-              child: Row(
-                children: <Widget>[
-                  _spinnerItem(_ctrl.value1),
-                  _spinnerDivider(),
-                  _spinnerItem(_ctrl.value2),
-                  _spinnerDivider(),
-                  _spinnerItem(_ctrl.value3),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: MySpace.spaceM,
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: MySpace.spaceM,
+          ),
+        ],
       ),
     );
   }
 
-  Widget _spinnerItem(Rx<double> value) {
+  Widget _spinnerItem(Rx<double> value, int duration) {
     return Expanded(
       flex: 1,
-      child: Container(
+      child: AnimatedContainer(
+        height: !_ctrl.isHeaderVisible.value ? MySpace.spinnerItemHeight : 0,
+        curve: Curves.easeIn,
+        duration: Duration(seconds: duration),
         decoration: BoxDecoration(
           color: darkPurpleColor,
           borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceM)),
