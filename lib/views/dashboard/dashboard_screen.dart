@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getx_flutter/base/base_controller.dart';
@@ -70,6 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   children: [
                     GestureDetector(
                       onTap: () {
+                        _startRotating();
                         _ctrl.startItemAnimation("16");
                       },
                       child: TextView(
@@ -89,20 +91,21 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                     ),
                     GestureDetector(
-                        onTap: () {
-                          _finishRotating();
-                          /* setState(() {
+                      onTap: () {
+                        _finishRotating();
+                        /* setState(() {
                         _listData[0].isSelected = true;
                         _ctrl.textSize.value = 60.0;
                         animated = !animated;
                       });*/
-                          //_winDialog(context);
-                        },
-                        child: TextView(
-                          "Stop",
-                          textColor: Colors.white,
-                          fontSize: 25,
-                        ),),
+                        //_winDialog(context);
+                      },
+                      child: TextView(
+                        "Stop",
+                        textColor: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
                   ],
                 ),
                 //_crackerShow(),
@@ -358,7 +361,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                   ),
                   _ctrl.listData[index].isSelected!
                       ? Center(
-                          child: Lottie.asset('assets/json/success.json'),
+                          child: Image.asset(
+                            "assets/gif/fire.gif",
+                          ),
                         )
                       : SizedBox(),
                 ],
@@ -399,49 +404,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                 color: Colors.transparent,
                 child: Row(
                   children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: RollerList(
-                        items: slots,
-                        enabled: false,
-                        key: leftRoller,
-                        onSelectedIndexChanged: (value) {
-                          setState(() {
-                            first = 16;
-                          });
-                        },
-                      ),
-                    ),
-                    VerticalDivider(
-                      width: MySpace.spaceM,
-                      color: Colors.black,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: RollerList(
-                        enabled: false,
-                        items: slots,
-                        key: rightRoller,
-                        onSelectedIndexChanged: (value) {
-                          setState(() {
-                            third = 05;
-                          });
-                        },
-                      ),
-                    ),
-                    VerticalDivider(
-                      width: MySpace.spaceM,
-                      color: Colors.black,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: RollerList(
-                        enabled: false,
-                        items: slots,
-                        key: fourthRoller,
-                        onSelectedIndexChanged: (value) {},
-                      ),
-                    ),
+                    _spinnerItem(_ctrl.value1),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value2),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value3),
                   ],
                 ),
               ),
@@ -452,6 +419,33 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
+  Widget _spinnerItem(Rx<double> value) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: darkPurpleColor,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          border: Border.all(color: lightBorderColor, width: 3),
+        ),
+        child: AnimatedFlipCounter(
+          duration: Duration(seconds: 1),
+          value: value.value,
+          textStyle: TextStyle(
+              color: whiteColor,
+              fontSize: 30
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _spinnerDivider(){
+    return VerticalDivider(
+        width: MySpace.spaceM,
+        color: Colors.black,
+    );
+  }
   void _startRotating() {
     rotator = Timer.periodic(rotationDuration, _rotateRoller);
   }
@@ -490,11 +484,11 @@ class _DashboardScreenState extends State<DashboardScreen>
     ];
     for (int i = 0; i < arrylistdata.length; i++) {
       result.add(Container(
-        decoration: BoxDecoration(
+        /* decoration: BoxDecoration(
           color: darkPurpleColor,
           borderRadius: BorderRadius.all(Radius.circular(8)),
           border: Border.all(color: lightBorderColor, width: 3),
-        ),
+        ),*/
         child: Align(
             alignment: Alignment.center,
             child: TextView(arrylistdata[i].toString(),
