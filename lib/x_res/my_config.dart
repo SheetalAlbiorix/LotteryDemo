@@ -23,4 +23,15 @@ class MySpace {
   static final double spaceM = 8.0;
   static final double spaceL = 16.0;
   static final double spaceXL = 32.0;
+
+  ///font sizes
+  static final double font16 = 16.0;
+  static final double font18 = 18.0;
+  static final double font20 = 20.0;
+  static final double font24 = 24.0;
+  static final double font30 = 30.0;
+
+  ///statics
+  static final headerHeight = 220.0;
+  static final spinnerItemHeight = 72.0;
 }
