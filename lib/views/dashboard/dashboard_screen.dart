@@ -23,19 +23,20 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    controller =
-        AnimationController(duration: const Duration(seconds: 1), vsync: this);
+    controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
     animation = Tween<double>(begin: 30, end: 40).animate(controller)
       ..addListener(() {
-        setState(() {
-        });
+        setState(() {});
       });
     controller.forward();
 
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 30),
+          padding: EdgeInsets.symmetric(horizontal: MySpace.marginXL),
           height: double.infinity,
           width: double.infinity,
           decoration: BoxDecoration(
@@ -51,42 +52,9 @@ class _DashboardScreenState extends State<DashboardScreen>
               children: [
                 _headerView(),
                 _timerView(),
-                // _crackerShow(),
-                slotMachine(),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _ctrl.startItemAnimation("16");
-                      },
-                      child: TextView(
-                        "click me",
-                        textColor: Colors.white,
-                        fontSize: 25,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _ctrl.startItemAnimation("22");
-                      },
-                      child: TextView(
-                        "click me1",
-                        textColor: Colors.white,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ],
-                ),
-                //_crackerShow(),
+                _slotMachineView(),
                 _entryView(),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
-                  height: 3,
-                  decoration: BoxDecoration(
-                    color: lightWhiteTextColor,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                ),
+                _horizontalDivider(),
                 _myEntryList(context),
               ],
             ),
@@ -103,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         duration: Duration(seconds: 2),
         vsync: this,
         child: SizedBox(
-          height: _ctrl.isHeaderVisible.value ? 220 : 0,
+          height: _ctrl.isHeaderVisible.value ? MySpace.headerHeight : 0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -114,7 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 weeklyLotteryText.toUpperCase(),
                 fontWeight: FontWeight.bold,
                 textColor: whiteColor,
-                fontSize: 24,
+                fontSize: MySpace.font24,
               ),
               SizedBox(
                 height: MySpace.spaceL,
@@ -122,7 +90,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               TextView(
                 playNowChanceText,
                 textColor: whiteColor.withOpacity(.7),
-                fontSize: 16,
+                fontSize: MySpace.font16,
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -152,14 +120,14 @@ class _DashboardScreenState extends State<DashboardScreen>
                       jackpotText,
                       fontWeight: FontWeight.bold,
                       textColor: whiteColor,
-                      fontSize: 20,
+                      fontSize: MySpace.font20,
                     ),
                     Spacer(),
                     TextView(
                       "\$",
                       fontWeight: FontWeight.bold,
                       textColor: whiteColor,
-                      fontSize: 18,
+                      fontSize: MySpace.font18,
                     ),
                     SizedBox(
                       width: MySpace.spaceS,
@@ -168,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       "50",
                       fontWeight: FontWeight.bold,
                       textColor: whiteColor,
-                      fontSize: 30,
+                      fontSize: MySpace.font30,
                     ),
                   ],
                 ),
@@ -205,14 +173,126 @@ class _DashboardScreenState extends State<DashboardScreen>
         TextView(
           val.toString(),
           textColor: whiteColor,
-          fontSize: 30,
+          fontSize: MySpace.font30,
         ),
         TextView(
           des,
           textColor: yellowBgColor,
-          fontSize: 20,
+          fontSize: MySpace.font20,
         )
       ],
+    );
+  }
+
+  Widget _slotMachineView() {
+    return Obx(
+      () => AnimatedSize(
+        vsync: this,
+        //height: !_ctrl.isHeaderVisible.value ? 150 : 0,
+        curve: Curves.easeIn,
+        duration: Duration(seconds: 2),
+        child: Column(
+          children: [
+            TextView(
+              thisWeekWinningNumberText,
+              textColor: Colors.white,
+              fontSize: MySpace.font20,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: MySpace.spaceM,
+            ),
+            Container(
+              width: double.infinity,
+              //height: MySpace.spinnerItemHeight,
+              height: !_ctrl.isHeaderVisible.value ? MySpace.spinnerItemHeight : 0,
+              color: Colors.transparent,
+              child: Row(
+                children: <Widget>[
+                  _spinnerItem(_ctrl.value1),
+                  _spinnerDivider(),
+                  _spinnerItem(_ctrl.value2),
+                  _spinnerDivider(),
+                  _spinnerItem(_ctrl.value3),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: MySpace.spaceM,
+            ),
+          ],
+        ),
+      ),
+    );
+    /*return Obx(
+      () => AnimatedOpacity(
+        opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
+        curve: Curves.easeInOut,
+        duration: Duration(seconds: 1),
+        child: Visibility(
+          visible: !_ctrl.isHeaderVisible.value,
+          child: Column(
+            children: [
+              TextView(
+                thisWeekWinningNumberText,
+                textColor: Colors.white,
+                fontSize: MySpace.font20,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: MySpace.spaceM,
+              ),
+              Container(
+                width: double.infinity,
+                height: MySpace.spinnerItemHeight,
+                color: Colors.transparent,
+                child: Row(
+                  children: <Widget>[
+                    _spinnerItem(_ctrl.value1),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value2),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value3),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: MySpace.spaceM,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );*/
+  }
+
+  Widget _spinnerItem(Rx<double> value) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: darkPurpleColor,
+          borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceM)),
+          border: Border.all(color: lightBorderColor, width: 3),
+        ),
+        child: value.value > 0
+            ? AnimatedFlipCounter(
+                duration: Duration(seconds: 1),
+                value: value.value,
+                textStyle:
+                    TextStyle(color: whiteColor, fontSize: MySpace.font30),
+              )
+            : SizedBox(
+                height: MySpace.spinnerItemHeight,
+              ),
+      ),
+    );
+  }
+
+  Widget _spinnerDivider() {
+    return VerticalDivider(
+      width: MySpace.spaceM,
+      color: Colors.black,
     );
   }
 
@@ -223,7 +303,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         duration: Duration(seconds: 2),
         vsync: this,
         child: SizedBox(
-          height: _ctrl.isHeaderVisible.value ? 220 : 0,
+          height: _ctrl.isHeaderVisible.value ? MySpace.headerHeight : 0,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: MySpace.spaceXL),
             child: Column(
@@ -237,12 +317,23 @@ class _DashboardScreenState extends State<DashboardScreen>
                 TextView(
                   "0 ${remainingText.toLowerCase()}",
                   textColor: whiteColor,
-                  fontSize: 18,
+                  fontSize: MySpace.font18,
                 ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _horizontalDivider() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: MySpace.spaceM),
+      height: 3,
+      decoration: BoxDecoration(
+        color: lightWhiteTextColor,
+        borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceM)),
       ),
     );
   }
@@ -258,14 +349,14 @@ class _DashboardScreenState extends State<DashboardScreen>
                 myEntriesText,
                 fontWeight: FontWeight.bold,
                 textColor: whiteColor,
-                fontSize: 20,
+                fontSize: MySpace.font20,
               ),
               SizedBox(
                 width: MySpace.spaceL,
               ),
               Container(
-                height: 30,
-                width: 30,
+                height: MySpace.spaceXL,
+                width: MySpace.spaceXL,
                 decoration: new BoxDecoration(
                   color: yellowBgColor,
                   shape: BoxShape.circle,
@@ -275,13 +366,13 @@ class _DashboardScreenState extends State<DashboardScreen>
                     "4",
                     fontWeight: FontWeight.bold,
                     textColor: blackTextColor,
-                    fontSize: 20,
+                    fontSize: MySpace.font20,
                   ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: MySpace.spaceM),
           entryGridList(context),
         ],
       ),
@@ -304,7 +395,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         itemBuilder: (BuildContext context, int index) {
           return Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceM)),
               border: Border.all(color: lightBorderColor, width: 3),
             ),
             child: Align(
@@ -320,12 +411,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                             : whiteColor,
                         fontSize: _ctrl.listData[index].isSelected!
                             ? _ctrl.textSize.value
-                            : 30,
+                            : MySpace.font30,
                       ),
                       duration: Duration(seconds: 1),
-                      onEnd: () => {
-                        _ctrl.stopItemAnimation(),
-                      },
                     ),
                   ),
                   _ctrl.listData[index].isSelected!
@@ -346,74 +434,6 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget _crackerShow() {
     return Lottie.asset('assets/json/success.json');
-  }
-
-  Widget slotMachine() {
-    return Obx(
-      () => AnimatedOpacity(
-        opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
-        curve: Curves.easeInOut,
-        duration: Duration(seconds: 1),
-        child: Visibility(
-          visible: !_ctrl.isHeaderVisible.value,
-          child: Column(
-            children: [
-              TextView(
-                thisWeekWinningNumberText,
-                textColor: Colors.white,
-                fontSize: 20,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.infinity,
-                height: 72,
-                color: Colors.transparent,
-                child: Row(
-                  children: <Widget>[
-                    _spinnerItem(_ctrl.value1),
-                    _spinnerDivider(),
-                    _spinnerItem(_ctrl.value2),
-                    _spinnerDivider(),
-                    _spinnerItem(_ctrl.value3),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _spinnerItem(Rx<double> value) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(
-          color: darkPurpleColor,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          border: Border.all(color: lightBorderColor, width: 3),
-        ),
-        child: AnimatedFlipCounter(
-          duration: Duration(seconds: 1),
-          value: value.value,
-          textStyle: TextStyle(
-              color: whiteColor,
-              fontSize: 30
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _spinnerDivider(){
-    return VerticalDivider(
-        width: MySpace.spaceM,
-        color: Colors.black,
-    );
   }
 
   _winDialog(BuildContext context) {
