@@ -8,6 +8,7 @@ import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
 import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -22,14 +23,59 @@ class _DashboardScreenState extends State<DashboardScreen>
   late Animation<double> animation;
   late AnimationController controller;
 
+  AnimationController? _controller;
+  List<Animation<Offset>>? _offsetAnimation;
+
+  double offset(int index) {
+    if(index == 0 ||index == 1||index == 2){
+      return 2.265;
+    }else if(index == 3 ||index == 4||index == 5) {
+      return 0;
+    }else if(index == 6 ||index == 7||index == 8) {
+      return -2.265;
+    }else if(index == 9 ||index == 10||index == 11) {
+      return 0;
+    }
+    return 0;
+  }
+
+  @override
+  void initState() {
+       super.initState();
+
+       _controller = AnimationController(
+         duration: const Duration(seconds: 1),
+         vsync: this,
+       );
+       _offsetAnimation = List.generate(
+         12,
+             (index) => Tween<Offset>(
+           begin: const Offset(0.0, 0.0),
+           end: Offset(0.0,offset(index)),
+         ).animate(_controller!),
+       );
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.dispose();
+  }
+  void _animate() {
+    _controller?.status == AnimationStatus.completed
+        ? _controller?.reverse()
+        : _controller?.forward();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     controller =
         AnimationController(duration: const Duration(seconds: 1), vsync: this);
     animation = Tween<double>(begin: 30, end: 40).animate(controller)
       ..addListener(() {
-        setState(() {
-        });
+        setState(() {});
       });
     controller.forward();
 
@@ -283,13 +329,14 @@ class _DashboardScreenState extends State<DashboardScreen>
             ],
           ),
           SizedBox(height: 10),
-          entryGridList(context),
+          entryGridList(context,_offsetAnimation,_animate),
         ],
       ),
     );
   }
 
-  Widget entryGridList(BuildContext context) {
+
+  Widget entryGridList(BuildContext context,List<Animation<Offset>>? position, void Function() animate) {
     return Obx(
       () => GridView.builder(
         shrinkWrap: true,
@@ -303,40 +350,46 @@ class _DashboardScreenState extends State<DashboardScreen>
           mainAxisSpacing: 8.0,
         ),
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              border: Border.all(color: lightBorderColor, width: 3),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Stack(
-                children: [
-                  Center(
-                    child: AnimatedDefaultTextStyle(
-                      child: Text(_ctrl.listData[index].title!),
-                      style: TextStyle(
-                        color: _ctrl.listData[index].isAnimated
-                            ? yellowBgColor
-                            : whiteColor,
-                        fontSize: _ctrl.listData[index].isSelected!
-                            ? _ctrl.textSize.value
-                            : 30,
-                      ),
-                      duration: Duration(seconds: 1),
-                      onEnd: () => {
-                        _ctrl.stopItemAnimation(),
-                      },
-                    ),
-                  ),
-                  _ctrl.listData[index].isSelected!
-                      ? Center(
-                          child: Image.asset(
-                            "assets/gif/fire.gif",
+          return SlideTransition(
+            position: position![index],
+            child: GestureDetector(
+              onTap: animate,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  border: Border.all(color: lightBorderColor, width: 3),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: AnimatedDefaultTextStyle(
+                          child: Text(_ctrl.listData[index].title!),
+                          style: TextStyle(
+                            color: _ctrl.listData[index].isAnimated
+                                ? yellowBgColor
+                                : whiteColor,
+                            fontSize: _ctrl.listData[index].isSelected!
+                                ? _ctrl.textSize.value
+                                : 30,
                           ),
-                        )
-                      : SizedBox(),
-                ],
+                          duration: Duration(seconds: 1),
+                          onEnd: () => {
+                            _ctrl.stopItemAnimation(),
+                          },
+                        ),
+                      ),
+                      _ctrl.listData[index].isSelected!
+                          ? Center(
+                              child: Image.asset(
+                                "assets/gif/fire.gif",
+                              ),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                ),
               ),
             ),
           );
@@ -360,7 +413,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           child: Column(
             children: [
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   _winDialog(context);
                 },
                 child: TextView(
@@ -406,33 +459,30 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: AnimatedFlipCounter(
           duration: Duration(seconds: 1),
           value: value.value,
-          textStyle: TextStyle(
-              color: whiteColor,
-              fontSize: 30
-          ),
+          textStyle: TextStyle(color: whiteColor, fontSize: 30),
         ),
       ),
     );
   }
 
-  Widget _spinnerDivider(){
+  Widget _spinnerDivider() {
     return VerticalDivider(
-        width: MySpace.spaceM,
-        color: Colors.black,
+      width: MySpace.spaceM,
+      color: Colors.black,
     );
   }
 
   _winDialog(BuildContext context) {
     return showAnimatedDialog(
       context: context,
-      animationType:DialogTransitionType.slideFromBottom,
+      animationType: DialogTransitionType.slideFromBottom,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
           insetPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-          contentPadding: EdgeInsets.only(top: 0.0,left:0.0,right: 0),
+          contentPadding: EdgeInsets.only(top: 0.0, left: 0.0, right: 0),
           content: Stack(
             children: <Widget>[
               Container(
@@ -459,12 +509,21 @@ class _DashboardScreenState extends State<DashboardScreen>
                       width: 120,
                     ),
                     SizedBox(height: 20),
-                    Text(
+                   /*  Text(
                       youWonText,
                       style: TextStyle(
                           color: blackTextColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 30),
+                    ),*/
+                    Text(
+                      youWonText,
+                      style: GoogleFonts.balooThambi(
+                        fontWeight: FontWeight.w500,
+                        textStyle: TextStyle(
+                            color: blackTextColor,
+                            fontSize: 30),
+                      ),
                     ),
                     SizedBox(height: 20),
                     Container(
