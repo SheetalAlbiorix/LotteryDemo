@@ -1,6 +1,4 @@
-import 'dart:async';
-import 'dart:math';
-
+import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -11,7 +9,6 @@ import 'package:getx_flutter/helper/text_view.dart';
 import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
 import 'package:lottie/lottie.dart';
-import 'package:roller_list/roller_list.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -21,15 +18,6 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with TickerProviderStateMixin {
   final _ctrl = Get.put(DashBoardController());
-
-  final leftRoller = new GlobalKey<RollerListState>();
-  final rightRoller = new GlobalKey<RollerListState>();
-  final fourthRoller = new GlobalKey<RollerListState>();
-  Timer? rotator;
-  var rotationDuration = Duration(milliseconds: 300);
-  final List<Widget> slots = _getSlots();
-  Random _random = new Random();
-  int? first = 0, second = 0, third = 0;
 
   late Animation<double> animation;
   late AnimationController controller;
@@ -41,7 +29,6 @@ class _DashboardScreenState extends State<DashboardScreen>
     animation = Tween<double>(begin: 30, end: 40).animate(controller)
       ..addListener(() {
         setState(() {
-          // The state that has changed here is the animation object’s value.
         });
       });
     controller.forward();
@@ -344,7 +331,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                   ),
                   _ctrl.listData[index].isSelected!
                       ? Center(
-                          child: Lottie.asset('assets/json/success.json'),
+                          child: Image.asset(
+                            "assets/gif/fire.gif",
+                          ),
                         )
                       : SizedBox(),
                 ],
@@ -390,49 +379,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                 color: Colors.transparent,
                 child: Row(
                   children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: RollerList(
-                        items: slots,
-                        enabled: false,
-                        key: leftRoller,
-                        onSelectedIndexChanged: (value) {
-                          setState(() {
-                            first = 16;
-                          });
-                        },
-                      ),
-                    ),
-                    VerticalDivider(
-                      width: MySpace.spaceM,
-                      color: Colors.black,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: RollerList(
-                        enabled: false,
-                        items: slots,
-                        key: rightRoller,
-                        onSelectedIndexChanged: (value) {
-                          setState(() {
-                            third = 05;
-                          });
-                        },
-                      ),
-                    ),
-                    VerticalDivider(
-                      width: MySpace.spaceM,
-                      color: Colors.black,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: RollerList(
-                        enabled: false,
-                        items: slots,
-                        key: fourthRoller,
-                        onSelectedIndexChanged: (value) {},
-                      ),
-                    ),
+                    _spinnerItem(_ctrl.value1),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value2),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value3),
                   ],
                 ),
               ),
@@ -443,44 +394,32 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  void _startRotating() {
-    rotator = Timer.periodic(rotationDuration, _rotateRoller);
-  }
-
-  void _rotateRoller(_) {
-    final leftRotationTarget = _random.nextInt(3 * slots.length);
-    final rightRotationTarget = _random.nextInt(3 * slots.length);
-    leftRoller.currentState?.smoothScrollToIndex(leftRotationTarget,
-        duration: rotationDuration, curve: Curves.linear);
-    /* rightRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
-        duration: _ROTATION_DURATION, curve: Curves.linear);
-    fourthRoller.currentState?.smoothScrollToIndex(rightRotationTarget,
-        duration: _ROTATION_DURATION, curve: Curves.linear);*/
-  }
-
-  void _finishRotating() {
-    rotator?.cancel();
-  }
-
-  static List<Widget> _getSlots() {
-    List<Widget> result = [];
-    for (int i = 0; i <= 9; i++) {
-      result.add(
-        Container(
-          padding: EdgeInsets.symmetric(vertical: MySpace.spaceL),
-          decoration: BoxDecoration(
-            color: darkPurpleColor,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            border: Border.all(color: lightBorderColor, width: 3),
-          ),
-          child: Align(
-            alignment: Alignment.center,
-            child: TextView(i.toString(), textColor: whiteColor, fontSize: 30),
+  Widget _spinnerItem(Rx<double> value) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: darkPurpleColor,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          border: Border.all(color: lightBorderColor, width: 3),
+        ),
+        child: AnimatedFlipCounter(
+          duration: Duration(seconds: 1),
+          value: value.value,
+          textStyle: TextStyle(
+              color: whiteColor,
+              fontSize: 30
           ),
         ),
-      );
-    }
-    return result;
+      ),
+    );
+  }
+
+  Widget _spinnerDivider(){
+    return VerticalDivider(
+        width: MySpace.spaceM,
+        color: Colors.black,
+    );
   }
 
   _winDialog(BuildContext context) {

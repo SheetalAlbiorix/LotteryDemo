@@ -26,6 +26,7 @@ dependencies:
   lottie: ^1.1.0
   roller_list: ^1.0.2
   flutter_animated_dialog: ^2.0.1
+  animated_flip_counter: ^0.1.2
 
 dev_dependencies:
   flutter_test:
@@ -35,7 +36,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/gif/loading_spinner.gif
+    - assets/gif/fire.gif
     - assets/json/
 
   fonts:

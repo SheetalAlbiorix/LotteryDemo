@@ -13,6 +13,10 @@ class DashBoardController extends BaseController {
 
   Rx<double> textSize = 30.0.obs;
 
+  Rx<double> value1 = 18.0.obs;
+  Rx<double> value2 = 18.0.obs;
+  Rx<double> value3 = 18.0.obs;
+
   RxList listData = [
     ListData(title: "99", isSelected: false),
     ListData(title: "03", isSelected: false),
@@ -72,24 +76,32 @@ class DashBoardController extends BaseController {
   }
 
   void startItemAnimation(String value) {
+    value1.value = 89;
     selectedNumber.value = value;
     listData.asMap().forEach((index, item) => {
-      if(item.title == value){
-        listData[index].isSelected = true,
-        textSize.value = 60.0,
-        listData[index].isAnimated = true,
-      }
-    });
+          if (item.title == value)
+            {
+              listData[index].isSelected = true,
+              textSize.value = 60.0,
+              listData[index].isAnimated = true,
+            }
+        });
   }
 
-  void stopItemAnimation() async{
+  void stopItemAnimation() async {
     textSize.value = 30.0;
-    await Future.delayed(const Duration(seconds: 1), (){
-      listData.asMap().forEach((index, item) => {
-        if(item.title == selectedNumber.value){
-          listData[index].isSelected = false,
-        }
-      });
-    });
+    await Future.delayed(
+      Duration(seconds: 1),
+      () => {
+        listData.asMap().forEach(
+              (index, item) => {
+                if (item.title == selectedNumber.value)
+                  {
+                    listData[index].isSelected = false,
+                  }
+              },
+            )
+      },
+    );
   }
 }
