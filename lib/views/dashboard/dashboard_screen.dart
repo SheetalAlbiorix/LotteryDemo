@@ -399,37 +399,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           mainAxisSpacing: 8.0,
         ),
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceM)),
-              border: Border.all(color: lightBorderColor, width: 3),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Stack(
-                children: [
-                  Center(
-                    child: AnimatedDefaultTextStyle(
-                      child: Text(_ctrl.listData[index].title!),
-                      style: TextStyle(
-                        color: _ctrl.listData[index].isAnimated
-                            ? yellowBgColor
-                            : whiteColor,
-                        fontSize: _ctrl.listData[index].isSelected!
-                            ? _ctrl.textSize.value
-                            : MySpace.font30,
-                      ),
-                      duration: Duration(seconds: 1),
-                    ),
-                  ),
-                  _ctrl.listData[index].isSelected!
-                      ? Center(
-                          child: Image.asset(
-                            "assets/gif/fire.gif",
-                          ),
-                        )
-                      : SizedBox(),
-                ],
           return SlideTransition(
             position: position![index],
             child: GestureDetector(
@@ -455,9 +424,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                                 : 30,
                           ),
                           duration: Duration(seconds: 1),
-                          onEnd: () => {
-                            _ctrl.stopItemAnimation(),
-                          },
                         ),
                       ),
                       _ctrl.listData[index].isSelected!
@@ -512,11 +478,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                 color: Colors.transparent,
                 child: Row(
                   children: <Widget>[
-                    _spinnerItem(_ctrl.value1),
+                    _spinnerItem(_ctrl.value1,1000),
                     _spinnerDivider(),
-                    _spinnerItem(_ctrl.value2),
+                    _spinnerItem(_ctrl.value2,1200),
                     _spinnerDivider(),
-                    _spinnerItem(_ctrl.value3),
+                    _spinnerItem(_ctrl.value3,1400),
                   ],
                 ),
               ),
@@ -524,31 +490,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _spinnerItem(Rx<double> value) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(
-          color: darkPurpleColor,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          border: Border.all(color: lightBorderColor, width: 3),
-        ),
-        child: AnimatedFlipCounter(
-          duration: Duration(seconds: 1),
-          value: value.value,
-          textStyle: TextStyle(color: whiteColor, fontSize: 30),
-        ),
-      ),
-    );
-  }
-
-  Widget _spinnerDivider() {
-    return VerticalDivider(
-      width: MySpace.spaceM,
-      color: Colors.black,
     );
   }
 

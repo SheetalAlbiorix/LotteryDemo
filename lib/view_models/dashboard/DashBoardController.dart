@@ -157,6 +157,9 @@ class DashBoardController extends BaseController {
           {startRoller(value2)}
         else if (rollerCount == 2)
           {startRoller(value3)}
+        else {
+
+          }
       },
     );
   }
