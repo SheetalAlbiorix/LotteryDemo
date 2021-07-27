@@ -1,12 +1,14 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:getx_flutter/base/base_controller.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
 import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -20,6 +22,52 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   late Animation<double> animation;
   late AnimationController controller;
+
+  AnimationController? _controller;
+  List<Animation<Offset>>? _offsetAnimation;
+
+  double offset(int index) {
+    if(index == 0 ||index == 1||index == 2){
+      return 2.265;
+    }else if(index == 3 ||index == 4||index == 5) {
+      return 0;
+    }else if(index == 6 ||index == 7||index == 8) {
+      return -2.265;
+    }else if(index == 9 ||index == 10||index == 11) {
+      return 0;
+    }
+    return 0;
+  }
+
+  @override
+  void initState() {
+       super.initState();
+
+       _controller = AnimationController(
+         duration: const Duration(seconds: 1),
+         vsync: this,
+       );
+       _offsetAnimation = List.generate(
+         12,
+             (index) => Tween<Offset>(
+           begin: const Offset(0.0, 0.0),
+           end: Offset(0.0,offset(index)),
+         ).animate(_controller!),
+       );
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.dispose();
+  }
+  void _animate() {
+    _controller?.status == AnimationStatus.completed
+        ? _controller?.reverse()
+        : _controller?.forward();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -330,13 +378,14 @@ class _DashboardScreenState extends State<DashboardScreen>
             ],
           ),
           SizedBox(height: MySpace.spaceM),
-          entryGridList(context),
+          entryGridList(context,_offsetAnimation,_animate),
         ],
       ),
     );
   }
 
-  Widget entryGridList(BuildContext context) {
+
+  Widget entryGridList(BuildContext context,List<Animation<Offset>>? position, void Function() animate) {
     return Obx(
       () => GridView.builder(
         shrinkWrap: true,
@@ -350,37 +399,43 @@ class _DashboardScreenState extends State<DashboardScreen>
           mainAxisSpacing: 8.0,
         ),
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(MySpace.spaceM)),
-              border: Border.all(color: lightBorderColor, width: 3),
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Stack(
-                children: [
-                  Center(
-                    child: AnimatedDefaultTextStyle(
-                      child: Text(_ctrl.listData[index].title!),
-                      style: TextStyle(
-                        color: _ctrl.listData[index].isAnimated
-                            ? yellowBgColor
-                            : whiteColor,
-                        fontSize: _ctrl.listData[index].isSelected!
-                            ? _ctrl.textSize.value
-                            : MySpace.font30,
-                      ),
-                      duration: Duration(seconds: 1),
-                    ),
-                  ),
-                  _ctrl.listData[index].isSelected!
-                      ? Center(
-                          child: Image.asset(
-                            "assets/gif/fire.gif",
+          return SlideTransition(
+            position: position![index],
+            child: GestureDetector(
+              onTap: animate,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  border: Border.all(color: lightBorderColor, width: 3),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: AnimatedDefaultTextStyle(
+                          child: Text(_ctrl.listData[index].title!),
+                          style: TextStyle(
+                            color: _ctrl.listData[index].isAnimated
+                                ? yellowBgColor
+                                : whiteColor,
+                            fontSize: _ctrl.listData[index].isSelected!
+                                ? _ctrl.textSize.value
+                                : 30,
                           ),
-                        )
-                      : SizedBox(),
-                ],
+                          duration: Duration(seconds: 1),
+                        ),
+                      ),
+                      _ctrl.listData[index].isSelected!
+                          ? Center(
+                              child: Image.asset(
+                                "assets/gif/fire.gif",
+                              ),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                ),
               ),
             ),
           );
@@ -393,19 +448,66 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Lottie.asset('assets/json/success.json');
   }
 
+  Widget slotMachine() {
+    return Obx(
+      () => AnimatedOpacity(
+        opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
+        curve: Curves.easeInOut,
+        duration: Duration(seconds: 1),
+        child: Visibility(
+          visible: !_ctrl.isHeaderVisible.value,
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  _winDialog(context);
+                },
+                child: TextView(
+                  thisWeekWinningNumberText,
+                  textColor: Colors.white,
+                  fontSize: 20,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: double.infinity,
+                height: 72,
+                color: Colors.transparent,
+                child: Row(
+                  children: <Widget>[
+                    _spinnerItem(_ctrl.value1,1000),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value2,1200),
+                    _spinnerDivider(),
+                    _spinnerItem(_ctrl.value3,1400),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   _winDialog(BuildContext context) {
-    return showDialog(
+    return showAnimatedDialog(
       context: context,
+      animationType: DialogTransitionType.slideFromBottom,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-          contentPadding: EdgeInsets.only(top: 0.0),
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+          contentPadding: EdgeInsets.only(top: 0.0, left: 0.0, right: 0),
           content: Stack(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(25),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -413,7 +515,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       end: Alignment.bottomCenter,
                       colors: [yellowBgColor, gradientyellow2Color]),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
+                    Radius.circular(10.0),
                   ),
                 ),
                 child: Column(
@@ -421,37 +523,43 @@ class _DashboardScreenState extends State<DashboardScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    SizedBox(height: 20),
+                    SizedBox(height: 30),
                     Image.asset(
                       "assets/images/gift.png",
-                      height: 100,
-                      width: 100,
+                      height: 110,
+                      width: 120,
                     ),
                     SizedBox(height: 20),
-                    Text(
+                   /*  Text(
                       youWonText,
                       style: TextStyle(
                           color: blackTextColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 25),
+                          fontSize: 30),
+                    ),*/
+                    Text(
+                      youWonText,
+                      style: GoogleFonts.balooThambi(
+                        fontWeight: FontWeight.w500,
+                        textStyle: TextStyle(
+                            color: blackTextColor,
+                            fontSize: 30),
+                      ),
                     ),
                     SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: 55, right: 55, top: 15, bottom: 15),
-                        decoration: BoxDecoration(
-                          color: yellowBgColor,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Text(
-                          "\$50",
-                          style: TextStyle(
-                              color: blackTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25),
-                        ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 75, right: 75, top: 15, bottom: 15),
+                      decoration: BoxDecoration(
+                        color: yellowBgColor,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      child: Text(
+                        "\$50",
+                        style: TextStyle(
+                            color: blackTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -463,23 +571,27 @@ class _DashboardScreenState extends State<DashboardScreen>
                         style: TextStyle(
                           color: blackTextColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 16,
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
                     Text(
                       yourEmployerText,
+                      textAlign: TextAlign.left,
                       style: TextStyle(
-                        color: blackTextColor,
-                        fontSize: 14,
+                        color: grayBgColor,
+                        height: 1.5,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
                       ),
                     ),
                   ],
                 ),
               ),
               Positioned(
-                top: 10.0,
-                right: 10.0,
+                top: 15.0,
+                right: 20.0,
                 child: GestureDetector(
                   onTap: () {
                     Get.back();
@@ -487,6 +599,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   child: Icon(
                     Icons.close,
                     color: blackTextColor,
+                    size: 35,
                   ),
                 ),
               ),
