@@ -26,6 +26,6 @@ const myEntriesText = "MY ENTRIES";
 const submitEntryText = "Submit entry";
 const thisWeekWinningNumberText = "THIS WEEK'S \n WINNING NUMBERS";
 const youWonText = "YOU WON!";
-const whatsNextText = "What's next!";
+const whatsNextText = "What's next?";
 const yourEmployerText =
     "Your Employer has been notified of your win and will be delivering your prize soon. If you have any questions please contact your supervisions. Thanks for playing!";

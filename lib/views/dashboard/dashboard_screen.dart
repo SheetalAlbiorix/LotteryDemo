@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:getx_flutter/base/base_controller.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_field.dart';
@@ -369,11 +370,16 @@ class _DashboardScreenState extends State<DashboardScreen>
           visible: !_ctrl.isHeaderVisible.value,
           child: Column(
             children: [
-              TextView(
-                thisWeekWinningNumberText,
-                textColor: Colors.white,
-                fontSize: 20,
-                textAlign: TextAlign.center,
+              GestureDetector(
+                onTap: (){
+                  _winDialog(context);
+                },
+                child: TextView(
+                  thisWeekWinningNumberText,
+                  textColor: Colors.white,
+                  fontSize: 20,
+                  textAlign: TextAlign.center,
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -478,18 +484,20 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   _winDialog(BuildContext context) {
-    return showDialog(
+    return showAnimatedDialog(
       context: context,
+      animationType:DialogTransitionType.slideFromBottom,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
-          contentPadding: EdgeInsets.only(top: 0.0),
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+          contentPadding: EdgeInsets.only(top: 0.0,left:0.0,right: 0),
           content: Stack(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(25),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -497,7 +505,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                       end: Alignment.bottomCenter,
                       colors: [yellowBgColor, gradientyellow2Color]),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(32.0),
+                    Radius.circular(10.0),
                   ),
                 ),
                 child: Column(
@@ -505,11 +513,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    SizedBox(height: 20),
+                    SizedBox(height: 30),
                     Image.asset(
                       "assets/images/gift.png",
-                      height: 100,
-                      width: 100,
+                      height: 110,
+                      width: 120,
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -517,25 +525,22 @@ class _DashboardScreenState extends State<DashboardScreen>
                       style: TextStyle(
                           color: blackTextColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 25),
+                          fontSize: 30),
                     ),
                     SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: 55, right: 55, top: 15, bottom: 15),
-                        decoration: BoxDecoration(
-                          color: yellowBgColor,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Text(
-                          "\$50",
-                          style: TextStyle(
-                              color: blackTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25),
-                        ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 75, right: 75, top: 15, bottom: 15),
+                      decoration: BoxDecoration(
+                        color: yellowBgColor,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      child: Text(
+                        "\$50",
+                        style: TextStyle(
+                            color: blackTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -547,23 +552,27 @@ class _DashboardScreenState extends State<DashboardScreen>
                         style: TextStyle(
                           color: blackTextColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 16,
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
                     Text(
                       yourEmployerText,
+                      textAlign: TextAlign.left,
                       style: TextStyle(
-                        color: blackTextColor,
-                        fontSize: 14,
+                        color: grayBgColor,
+                        height: 1.5,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
                       ),
                     ),
                   ],
                 ),
               ),
               Positioned(
-                top: 10.0,
-                right: 10.0,
+                top: 15.0,
+                right: 20.0,
                 child: GestureDetector(
                   onTap: () {
                     Get.back();
@@ -571,6 +580,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   child: Icon(
                     Icons.close,
                     color: blackTextColor,
+                    size: 35,
                   ),
                 ),
               ),

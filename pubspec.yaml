@@ -25,6 +25,7 @@ dependencies:
   intl:
   lottie: ^1.1.0
   roller_list: ^1.0.2
+  flutter_animated_dialog: ^2.0.1
 
 dev_dependencies:
   flutter_test:
