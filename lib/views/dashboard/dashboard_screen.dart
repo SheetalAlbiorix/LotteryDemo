@@ -44,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   var _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
-  int? first = 0, second = 0, third = 0;
+  int? first = 10, second = 10, third = 10;
 
   late Animation<double> animation;
   late AnimationController controller;
@@ -87,16 +87,31 @@ class _DashboardScreenState extends State<DashboardScreen>
                 slotMachine(),
                 GestureDetector(
                     onTap: () {
-                      //_startRotating();
-                      setState(() {
+                      _startRotating();
+                      /* setState(() {
                         _listData[0].isSelected = true;
                         _ctrl.textSize.value = 60.0;
                         animated = !animated;
-                      });
+                      });*/
                       //_winDialog(context);
                     },
                     child: TextView(
                       "click me",
+                      textColor: Colors.white,
+                      fontSize: 25,
+                    )),
+                GestureDetector(
+                    onTap: () {
+                      _finishRotating();
+                      /* setState(() {
+                        _listData[0].isSelected = true;
+                        _ctrl.textSize.value = 60.0;
+                        animated = !animated;
+                      });*/
+                      //_winDialog(context);
+                    },
+                    child: TextView(
+                      "Stop",
                       textColor: Colors.white,
                       fontSize: 25,
                     )),
@@ -486,18 +501,23 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   static List<Widget> _getSlots() {
     List<Widget> result = [];
-    for (int i = 0; i <= 9; i++) {
-      result.add(
-          /*Container(
-        padding: EdgeInsets.all(15.0),
-        color: Colors.white,
-
-        child: TextView(
-          i.toString(),
-          fontSize: 10,
-        ),
-      ));*/
-          Container(
+    List<int> arrylistdata = [
+      0,
+      99,
+      03,
+      36,
+      16,
+      17,
+      88,
+      16,
+      22,
+      05,
+      41,
+      98,
+      12
+    ];
+    for (int i = 0; i < arrylistdata.length; i++) {
+      result.add(Container(
         decoration: BoxDecoration(
           color: darkPurpleColor,
           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -505,7 +525,8 @@ class _DashboardScreenState extends State<DashboardScreen>
         ),
         child: Align(
             alignment: Alignment.center,
-            child: TextView(i.toString(), textColor: whiteColor, fontSize: 30)),
+            child: TextView(arrylistdata[i].toString(),
+                textColor: whiteColor, fontSize: 30)),
       ));
     }
     return result;
