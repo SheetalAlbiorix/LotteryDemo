@@ -350,10 +350,11 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget slotMachine() {
     return Obx(
-      () => AnimatedOpacity(
-        opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
+      () => AnimatedContainer(
+        height: !_ctrl.isHeaderVisible.value ? 172 : 0,
+        //opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
         curve: Curves.easeInOut,
-        duration: Duration(seconds: 1),
+        duration: Duration(seconds: 2),
         child: Visibility(
           visible: !_ctrl.isHeaderVisible.value,
           child: Column(
@@ -368,8 +369,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                 height: 10,
               ),
               Container(
-                width: double.infinity,
-                height: 72,
+                //width: double.infinity,
+                height: !_ctrl.isHeaderVisible.value ? 72 : 0,
                 color: Colors.transparent,
                 child: Row(
                   children: <Widget>[
