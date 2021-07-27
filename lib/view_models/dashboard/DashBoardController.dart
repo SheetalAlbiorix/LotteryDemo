@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:getx_flutter/base/base_view_view_model.dart';
+import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/models/listData.dart';
 
 class DashBoardController extends BaseController {
@@ -38,10 +42,16 @@ class DashBoardController extends BaseController {
   Rx<String> selectedNumber = "0".obs;
   Timer? _timer;
 
+  AnimationController? controller;
+
+  Rx<bool> isFinish = false.obs;
+
+  BuildContext? context;
+
   @override
   void onInit() {
     super.onInit();
-    //startTimer(DateTime.now().add(Duration(seconds: 6)));
+    startTimer(DateTime.now().add(Duration(seconds: 6)));
   }
 
   @override
@@ -151,7 +161,7 @@ class DashBoardController extends BaseController {
     textSize.value = 30.0;
     await Future.delayed(
       Duration(seconds: 1),
-      () => {
+      () async => {
         listData.asMap().forEach(
               (index, item) => {
                 if (item.title == selectedNumber.value)
@@ -164,9 +174,129 @@ class DashBoardController extends BaseController {
           {startRoller(value2)}
         else if (rollerCount == 2)
           {startRoller(value3)}
-        else {
-
+        else
+          {
+            controller?.status == AnimationStatus.completed
+                ? controller?.reverse()
+                : controller?.forward(),
+            isFinish.value = true,
+            await Future.delayed(
+              Duration(seconds: 2),
+              () => {
+                isFinish.value = false,
+                _winDialog(context!),
+              },
+            ),
           }
+      },
+    );
+  }
+
+  _winDialog(BuildContext context) {
+    return showAnimatedDialog(
+      context: context,
+      animationType: DialogTransitionType.slideFromBottom,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+          contentPadding: EdgeInsets.only(top: 0.0, left: 0.0, right: 0),
+          content: Stack(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(25),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [yellowBgColor, gradientyellow2Color]),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    Image.asset(
+                      "assets/images/gift.png",
+                      height: 110,
+                      width: 120,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      youWonText,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: blackTextColor,
+                        fontSize: 30,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 75, right: 75, top: 15, bottom: 15),
+                      decoration: BoxDecoration(
+                        color: yellowBgColor,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      child: Text(
+                        "\$50",
+                        style: TextStyle(
+                            color: blackTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        whatsNextText,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: blackTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      yourEmployerText,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: grayBgColor,
+                        height: 1.5,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 15.0,
+                right: 20.0,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: blackTextColor,
+                    size: 35,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
   }

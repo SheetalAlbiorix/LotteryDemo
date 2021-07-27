@@ -33,5 +33,6 @@ class MySpace {
 
   ///statics
   static final headerHeight = 220.0;
+  static final entryViewHeight = 120.0;
   static final spinnerItemHeight = 72.0;
 }

@@ -1,14 +1,12 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:getx_flutter/base/base_controller.dart';
 import 'package:getx_flutter/constants/Constant.dart';
 import 'package:getx_flutter/helper/text_field.dart';
 import 'package:getx_flutter/helper/text_view.dart';
 import 'package:getx_flutter/view_models/dashboard/DashBoardController.dart';
 import 'package:getx_flutter/x_res/my_res.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -27,13 +25,13 @@ class _DashboardScreenState extends State<DashboardScreen>
   List<Animation<Offset>>? _offsetAnimation;
 
   double offset(int index) {
-    if(index == 0 ||index == 1||index == 2){
-      return 2.265;
-    }else if(index == 3 ||index == 4||index == 5) {
+    if (index == 0 || index == 1 || index == 2) {
+      return 2.26;
+    } else if (index == 3 || index == 4 || index == 5) {
       return 0;
-    }else if(index == 6 ||index == 7||index == 8) {
-      return -2.265;
-    }else if(index == 9 ||index == 10||index == 11) {
+    } else if (index == 6 || index == 7 || index == 8) {
+      return -2.26;
+    } else if (index == 9 || index == 10 || index == 11) {
       return 0;
     }
     return 0;
@@ -41,33 +39,31 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   void initState() {
-       super.initState();
-
-       _controller = AnimationController(
-         duration: const Duration(seconds: 1),
-         vsync: this,
-       );
-       _offsetAnimation = List.generate(
-         12,
-             (index) => Tween<Offset>(
-           begin: const Offset(0.0, 0.0),
-           end: Offset(0.0,offset(index)),
-         ).animate(_controller!),
-       );
+    super.initState();
+    _ctrl.controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _offsetAnimation = List.generate(
+      12,
+      (index) => Tween<Offset>(
+        begin: const Offset(0.0, 0.0),
+        end: Offset(0.0, offset(index)),
+      ).animate(_ctrl.controller!),
+    );
   }
-
 
   @override
   void dispose() {
     super.dispose();
-    _controller?.dispose();
+    _ctrl.controller?.dispose();
   }
+
   void _animate() {
     _controller?.status == AnimationStatus.completed
         ? _controller?.reverse()
         : _controller?.forward();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,33 +76,38 @@ class _DashboardScreenState extends State<DashboardScreen>
         setState(() {});
       });
     controller.forward();
-
+    _ctrl.context = context;
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: MySpace.marginXL),
-          height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomCenter,
-              colors: <Color>[lightPurpleColor1, lightBorderColor1],
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: MySpace.marginXL),
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[lightPurpleColor1, lightBorderColor1],
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _headerView(),
+                    _timerView(),
+                    _entryView(),
+                    _slotMachineView(),
+                    _horizontalDivider(),
+                    _myEntryList(context),
+                  ],
+                ),
+              ),
             ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _headerView(),
-                _timerView(),
-                _slotMachineView(),
-                _entryView(),
-                _horizontalDivider(),
-                _myEntryList(context),
-              ],
-            ),
-          ),
+            if(_ctrl.isFinish.value) loaderWidget(),
+          ],
         ),
       ),
     );
@@ -236,19 +237,25 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Obx(
       () => Column(
         children: [
-          TextView(
-            thisWeekWinningNumberText,
-            textColor: Colors.white,
-            fontSize: MySpace.font20,
-            textAlign: TextAlign.center,
+          Visibility(
+            visible: !_ctrl.isHeaderVisible.value,
+            child: TextView(
+              thisWeekWinningNumberText,
+              textColor: Colors.white,
+              fontSize: MySpace.font20,
+              textAlign: TextAlign.center,
+            ),
           ),
-          SizedBox(
-            height: MySpace.spaceM,
+          Visibility(
+            visible: !_ctrl.isHeaderVisible.value,
+            child: SizedBox(
+              height: MySpace.spaceM,
+            ),
           ),
           Container(
             width: double.infinity,
             //height: MySpace.spinnerItemHeight,
-            height: MySpace.spinnerItemHeight,
+            height: !_ctrl.isHeaderVisible.value ? MySpace.spinnerItemHeight : 0,
             color: Colors.transparent,
             child: Row(
               children: <Widget>[
@@ -308,9 +315,9 @@ class _DashboardScreenState extends State<DashboardScreen>
         duration: Duration(seconds: 2),
         vsync: this,
         child: SizedBox(
-          height: _ctrl.isHeaderVisible.value ? MySpace.headerHeight : 0,
+          height: _ctrl.isHeaderVisible.value ? MySpace.entryViewHeight : 0,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: MySpace.spaceXL),
+            padding: EdgeInsets.symmetric(vertical: MySpace.spaceL),
             child: Column(
               children: [
                 CustomTextField(
@@ -357,7 +364,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 fontSize: MySpace.font20,
               ),
               SizedBox(
-                width: MySpace.spaceL,
+                width: MySpace.spaceXL,
               ),
               Container(
                 height: MySpace.spaceXL,
@@ -377,15 +384,15 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ],
           ),
-          SizedBox(height: MySpace.spaceM),
-          entryGridList(context,_offsetAnimation,_animate),
+          SizedBox(height: MySpace.spaceXL),
+          entryGridList(context, _offsetAnimation, _animate),
         ],
       ),
     );
   }
 
-
-  Widget entryGridList(BuildContext context,List<Animation<Offset>>? position, void Function() animate) {
+  Widget entryGridList(BuildContext context, List<Animation<Offset>>? position,
+      void Function() animate) {
     return Obx(
       () => GridView.builder(
         shrinkWrap: true,
@@ -395,8 +402,8 @@ class _DashboardScreenState extends State<DashboardScreen>
           childAspectRatio:
               2 / (3 * MediaQuery.of(context).textScaleFactor / 2.5),
           crossAxisCount: 3,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 12.0,
+          mainAxisSpacing: 12.0,
         ),
         itemBuilder: (BuildContext context, int index) {
           return SlideTransition(
@@ -444,169 +451,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _crackerShow() {
-    return Lottie.asset('assets/json/success.json');
-  }
-
-  Widget slotMachine() {
-    return Obx(
-      () => AnimatedOpacity(
-        opacity: _ctrl.isHeaderVisible.value ? 0 : 1,
-        curve: Curves.easeInOut,
-        duration: Duration(seconds: 1),
-        child: Visibility(
-          visible: !_ctrl.isHeaderVisible.value,
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _winDialog(context);
-                },
-                child: TextView(
-                  thisWeekWinningNumberText,
-                  textColor: Colors.white,
-                  fontSize: 20,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: double.infinity,
-                height: 72,
-                color: Colors.transparent,
-                child: Row(
-                  children: <Widget>[
-                    _spinnerItem(_ctrl.value1,1000),
-                    _spinnerDivider(),
-                    _spinnerItem(_ctrl.value2,1200),
-                    _spinnerDivider(),
-                    _spinnerItem(_ctrl.value3,1400),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  _winDialog(BuildContext context) {
-    return showAnimatedDialog(
-      context: context,
-      animationType: DialogTransitionType.slideFromBottom,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          insetPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-          contentPadding: EdgeInsets.only(top: 0.0, left: 0.0, right: 0),
-          content: Stack(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(25),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [yellowBgColor, gradientyellow2Color]),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SizedBox(height: 30),
-                    Image.asset(
-                      "assets/images/gift.png",
-                      height: 110,
-                      width: 120,
-                    ),
-                    SizedBox(height: 20),
-                   /*  Text(
-                      youWonText,
-                      style: TextStyle(
-                          color: blackTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30),
-                    ),*/
-                    Text(
-                      youWonText,
-                      style: GoogleFonts.balooThambi(
-                        fontWeight: FontWeight.w500,
-                        textStyle: TextStyle(
-                            color: blackTextColor,
-                            fontSize: 30),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: 75, right: 75, top: 15, bottom: 15),
-                      decoration: BoxDecoration(
-                        color: yellowBgColor,
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      child: Text(
-                        "\$50",
-                        style: TextStyle(
-                            color: blackTextColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 35),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        whatsNextText,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: blackTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      yourEmployerText,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: grayBgColor,
-                        height: 1.5,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                top: 15.0,
-                right: 20.0,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Icon(
-                    Icons.close,
-                    color: blackTextColor,
-                    size: 35,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  loaderWidget() {
+    return Center(
+        child: Container(
+            child: Lottie.asset('assets/json/success.json')));
   }
 }
