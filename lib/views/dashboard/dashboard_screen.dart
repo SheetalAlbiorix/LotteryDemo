@@ -44,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen>
   var _ROTATION_DURATION = Duration(milliseconds: 300);
   final List<Widget> slots = _getSlots();
   Random _random = new Random();
-  int? first = 16, second = 22, third = 05;
+  int? first = 0, second = 0, third = 0;
 
   late Animation<double> animation;
   late AnimationController controller;
